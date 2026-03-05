@@ -40,11 +40,6 @@ This collection is one connected framework built in layers:
 - [Commentary on Open Questions about Time and Self-reference in Living Systems](./Commentary%20on%20Levin,%20Susan%20Stepney,%20et%20all/)  
   Focus: bridge to broader open-systems and living-systems research.
 
-## Suggested Reading Orders
-
-- Conceptual first: Border of Chaos -> Geometrical Theory -> Holy Trinity -> Evolution Dynamics -> Computational Chemistry.
-- Short bridge path: Border of Chaos -> Commentary -> Geometrical Theory.
-
 ## Notes
 
 - Folder-level `README.md` files contain concise summaries and direct file links.
