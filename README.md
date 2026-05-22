@@ -1,8 +1,11 @@
 # Walter Henrique Alves da Silva — Research
 
 This repository is my R&D , it holds the published papers and active work on a geometric description of thought and language.
+
 From a research standpoint, my home is in psychology and my first paper (At the Border of Chaos) is essentially a philosophy one, from then on it gets a bit more mathematical.
+
 I am an essentially self-taught, most things here were derived from first principles in my leisure time.
+
 What I'm actively building (and where these theoretical tools get applied) is https://github.com/faltz009/open-research-network
 ---
 
