@@ -76,3 +76,16 @@ In chronological order:
 ## Also in This Repository
 
 - [Commentary on Levin, Stepney et al.](./Commentary%20on%20Levin,%20Susan%20Stepney,%20et%20all/) — Written in response to open questions on time and self-reference in living systems; documents the convergence between this framework and Levin's bioelectric cognition work.
+
+---
+
+## Support This Research
+
+All of this is independent work done in my own time and released for free. If you find it useful or want to see it continue, any support helps.
+
+| Method | Address |
+|---|---|
+| BTC | `155jaKugGGhdwX2Dp55bfHWpWbWD3Gr3PG` |
+| ETH (ERC-20) | `0x31f0253180b03c16a0aa2d7091311d7363ef22a4` |
+| SOL | `HdGFaL6A8z8AetnyPn6vKPU4QJGaSHBtoqPK32qbe6wV` |
+| PIX (Brazil) | `walter.h057@gmail.com` |
