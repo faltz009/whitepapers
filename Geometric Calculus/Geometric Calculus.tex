@@ -1,0 +1,741 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\title{Geometric Calculus:\\Measurement, Identity, and the Falsity of Parallel Lines}
+\author{Walter Henrique Alves da Silva\\
+\texttt{walter.h057@gmail.com} \quad ORCID: 0009-0001-0857-096X\\
+Open Research Institute}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Circles are physical objects: wrap a string around anything round, measure, and the ratio of circumference to diameter is $\pi$. From this single measurement, the entire foundation of geometry and physics follows as consequence. The closure ratio $\pi$, the accumulation ratio $e$, and the perpendicular coupling $i$ are all determined by the physical properties of the circle, and their relationship $e^{i\pi} + 1 = 0$ is a law in the same sense that $F = ma$ is a law: a consequence of measurements that cannot be negated without changing what the measurements return.
+
+Lifting Euler's law from the unit circle to physical space ($S^3$) requires a calculus native to curved space: Newton solved the composition problem for flat curves; this paper derives the equivalent for closed ones, where the chain rule carries a correction term that flat calculus sets to zero, the four rules built around that correction are the $\sigma$-calculus. From them, Newton's calculus emerges as the zero-curvature limit, Schr\"odinger's equation and Friston's Free Energy Principle emerge as special cases of the derivative and integral rules, the gate compilation formula of quantum computing emerges as the chain rule written explicitly, and the Born rule of quantum mechanics emerges from the projection geometry.
+
+Euclid's first four postulates follow from the exponential path being defined, continuous, and periodic, and the fifth is false: it asserts non-interacting paths, and every exponential path returns to identity. Parallelism is what the fifth postulate looks like in the zero-curvature projection where the return point recedes beyond the observer's horizon.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+
+In 1666, a plague had closed Cambridge and Newton, twenty-three years old, was sent home to Woolsthorpe Manor in Lincolnshire with nothing to do but think on questions he could not answer. Why do planets follow ellipses and not some other curve? What force holds the moon in orbit while apples fall straight down? Is it the same force? How would you even calculate it precisely enough to check? 
+
+Newton had an intuition, but turning an intuition into numbers required mathematics that did not exist at the time. His idea was to reduce the problem: zoom in close enough on any smooth curve and it looks like a straight line, work out the simple case, then integrate back to recover the real shape, thats it. The then spent the next eighteen months building the machinery for that.
+
+Eighteen years later, a mathematician and astronomer named Edmond Halley --- the one the comet is named after --- came to Cambridge with a question: given an inverse-square force, what path does a planet trace? Newton instantly said: an ellipse, I have already calculated it. Halley asked to see the work, immediately understood what Newton was sitting on and pushed him to write it all up. The result was the \emph{Principia}. Newton became famous for the law of gravity that surpassed centuries ago, but it was the tool --- the calculus --- that made the whole thing possible, including the new laws and tools we use today, classical gravity was its first toy.
+
+Physics is bigger now, and it is asking different questions:how does something stay organized when everything around it tends toward disorder? How do you combine a sequence of steps when the order you do them in changes the result, and you need to account for that exactly rather than approximately? How do things change when what changes them does not commute? These questions come from quantum mechanics, from the study of how brains maintain themselves, from the engineering of quantum computers, and they all require machinery that Newton's flat-space calculus is struggling to reach.
+
+This paper extends an intuition of the same kind: when you zoom in on a point in the surface of a circle or sphere, you get another circle or sphere. The geometry is self-similar, the local object is itself a closed curve rather than an open line, and there is a composition rule that tells you how two such curves combine, with a correction term that flat calculus does not have. That correction and the four rules it generates are $\sigma$-calculus, derived in full from one physical measurement, the ratio of a circle's circumference to its diameter, and the geometry that measurement forces.
+
+When you work out what the four $\sigma$-calculus rules say about systems physics actually studies, several results emerge that have previously been derived in isolation: Schr\"odinger's equation --- how quantum states change from one moment to the next --- comes out of the $\sigma$-derivative; the Hamiltonian generates the rate of change and the time-evolution operator is the $\sigma$-integral accumulating it; the Free Energy Principle comes out of the same integral on compact geometry; the Baker-Campbell-Hausdorff formula that quantum computing uses to compile gate sequences comes out of the $\sigma$-chain rule. Newton's calculus is the zero-curvature limit of all four, recovered when the closed circles flatten into lines and the correction vanishes, and finally the Born rule of quantum mechanics is a theorem of the projection, not a postulate of the theory.
+
+Euclid, working in Alexandria around 300 BCE, was trying to answer a version of the same question: what are the rules that govern physical space? He proposed five, and four of them follow from Euler's identity alone, derivable as theorems from the closure property of circles. The fifth however claims that two lines which do not intersect will never intersect, no matter how far you extend them --- that two things can coexist in physical space with zero interaction between them. We prove the opposite: two things cannot coexist without interacting, meaning every thing that exists interacts with every other thing, without exceptions.
+
+\section{Space, time, and Euler's law}
+
+For some reason math and specially geometry are considered tools for physics, not an intrinsic part of reality, but that simply isn't true: we can have conventions about how we name things, but some observatios are true independent of frame, like the existence of boundaries and consequently integers. One observation is especially interesting and self-evident for us, the natural curvature of our space and its relation to time, and as old as the invention of the wheel.
+
+\subsection{Circles are physical}
+
+Wrap a string around a coffee cup, measure the circumference, measure the diameter, divide: the ratio is $3.14159\ldots$, stable across the cup's size, the string's material, the country you are standing in, and the century you are standing in. Repeat with a basketball, a planet, a proton's cross-section: the same number, because \textit{the ratio is a property of how space closes on itself.} 
+
+The ratio $\pi$ is a measurement, performed with physical instruments, returning a physical value, reproducible by anyone. 
+
+The measurement has one prerequisite --- a circle must exist, a physical object whose boundary returns to its starting point --- and one output --- the number $\pi$, which encodes how much path it takes to close a loop of a given width, making the circle the physical fact and $\pi$ its quantification.
+
+From this single measurement, two further quantities are determined without additional empirical input:
+
+\subsection{The accumulation of time}
+
+The number $e = 2.71828\ldots$ is defined by one property:
+\[
+    \frac{d}{dx}e^x = e^x.
+\]
+It is the unique function whose rate of change equals its current value. This makes $e$ the ratio of self-application --- the measuring stick of any process where growth is proportional to what already exists ---compound interest, cell division, radioactive decay are all all governed by $e$. Regardless of what the thing doing the growing actually is, \textit{$e$ measures the ratio of accumulation itself.}
+
+A circle gives you $e$ directly because circles have constant curvature --- the same bending at every point, which is what defines them as circles --- so each step along a circle depends only on where you currently are, also known as the \textbf{Markovian property}.
+
+The current state and the rate of change are always equal: $\frac{d}{dx}e^x = e^x$ in physical form. Traversing a circle applies spatial curvature ($\pi$) to itself through motion and produces temporal accumulation ($e$) --- the motion itself is time. $\pi$ measures the circle from outside as a static ratio, $e$ measures it from inside as an accumulating process, and the two are locked together in $e^{2\pi i} = 1$: the circle closes when the accumulation of its curvature completes exactly one turn.
+
+
+\subsection{The perpendicular coupling $i$}
+
+$i$ is defined as $\sqrt{-1}$ and called the imaginary unit, a name that implies it was invented for mathematical convenience --- it was not invented at all: $i$ is a measurement, forced by the geometry of the circle.
+
+You order a pizza --- how do you cut it? Everyone cuts it the same, four then eight slices. Why is that? Because perpendicularity is just there; no one takes a compass to measure the $90^\circ$ angle, but that is what it is, a measurement about space itself. Two directions are perpendicular when they are independent, when moving along one tells you nothing about the other, and the circle has exactly one way to divide itself into the minimum number of self-sufficient equal pieces: four quadrants, each of which regenerates the whole by rotation. 
+
+This fourfold structure appears wherever systems run in cycles --- the musical measure is $4/4$, the cardiac cycle has four phases, the gait cycle has four phases, cell division has four stages --- because any circle, divided by its natural perpendicular structure, gives four.
+
+The specific angle is forced by the dimensionality of the plane: in a 2D space, composing a rotation with itself doubles the angle, $e^{i\theta} \cdot e^{i\theta} = e^{2i\theta}$, and the $2$ doing the doubling is the dimensionality of the space. The antipode sits at $180^\circ$ and to find the midpoint between identity and the antipode, you invert the doubling: $180^\circ \div 2 = 90^\circ$. The square root in $i = \sqrt{-1}$ is the inverse of squaring in a two-dimensional space, and the result is forced: $i^2 = -1$ because squaring takes $90^\circ$ to the antipode at $180^\circ$.
+
+There are exactly two solutions --- $+i$ and $-i$, clockwise and counterclockwise quarter-turns that both reach the antipode when doubled --- and the choice between them is chirality: the one remaining freedom after the circle and its dimensionality have fixed everything else.
+
+\subsection{Euler's law}
+
+Three measurements of one circle, composed:
+\begin{equation}
+    e^{i\pi} + 1 = 0.
+\end{equation}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{euler.png}
+    \caption{Euler's law as a closed cycle: accumulation through perpendicular coupling over a half-turn of closure reaches the antipode, and composing the antipode with identity returns to the ground state.}
+    \label{fig:euler-cycle}
+\end{figure}
+
+The equation $e^{i\pi} = -1$ states that temporal accumulation, coupled through perpendicularity, run across one half-turn of spatial closure, arrives at negation --- going from any state to its opposite always costs $\pi$, because $\pi$ is the price of negation in any space that closes. Composing that negation with identity returns to zero, and applying the law twice:
+\begin{equation}
+    e^{2\pi i} = (e^{i\pi})^2 = (-1)^2 = 1.
+\end{equation}
+
+Two transcendental numbers --- each with infinite, non-repeating, deterministic digits --- compose to give exactly the integer 1. One full cycle of a continuous surface closes on an exact discrete value, identically, with nothing approximate about it. \textbf{This is the continuum-discrete bridge }and the deep reason calculus works at all.
+
+Euler published this in 1748 as a theorem relating constants discovered independently, with no obvious connection between them, but having derived all three from the same physical object, the equation reads differently: three measurements of a circle, composed, arrive where they must. Changing the equation means changing what a string returns when wrapped around a circle, what constant curvature accumulates, or where the perpendicular sits in a 2D plane --- and so the equation is a law in the same sense that $F = ma$ is a law grounded in measurement.
+
+The circle also recovers the zeroth law of thermodynamics directly: the $e$ in Boltzmann's factor $e^{-E/kT}$ is the same $e$ for the same reason, since any Markovian process is governed by $e$, and thermal equilibrium is when such accumulation has closed its loop. The zeroth law --- thermal equilibrium is transitive --- is the group property of that closure: if $A$ equilibrates with $B$ and $B$ with $C$, all three share the same closed loop. One physical measurement, the ratio of a circle's circumference to its diameter, and the foundation of thermodynamics follows.
+
+The law is verified by the Taylor series:
+\begin{align}
+    e^{i\pi} &= \sum_{n=0}^{\infty} \frac{(i\pi)^n}{n!}
+    = \left(1 - \frac{\pi^2}{2!} + \frac{\pi^4}{4!} - \cdots\right)
+     + i\left(\pi - \frac{\pi^3}{3!} + \frac{\pi^5}{5!} - \cdots\right) \nonumber \\
+    &= \cos(\pi) + i\sin(\pi) = -1 + 0 = -1,
+\end{align}
+where $\cos(\pi) = -1$ because half a turn around a circle lands at the opposite point, and $\sin(\pi) = 0$ because the perpendicular component vanishes at the poles. No assumption enters this computation beyond the series expansions of $\cos$ and $\sin$, which are themselves consequences of the Pythagorean relation $\cos^2\theta + \sin^2\theta = 1$ --- the algebraic statement that the circle has unit radius.
+
+\begin{definition}[Euler's law: the projection law of spacetime]
+    $e^{i\pi} + 1 = 0$ is a physical law: a consequence of measurements of space ($\pi$), time ($e$), and their perpendicular coupling ($i$). Changing the equation means changing what a string returns when wrapped around a circle, what constant curvature accumulates, or where the perpendicular sits in a 2D plane. The law states that one full cycle of continuous geometry closes on the discrete integer 1, and the $\sigma$-calculus inherits this exactness: the calculus is exact because its ground law is exact.
+\end{definition}
+
+Three properties of the exponential path follow from the law:
+\begin{enumerate}
+    \item $e^{i\theta}$ is \textbf{defined everywhere}: the Taylor series converges absolutely for all $\theta \in \mathbb{R}$, so an exponential path exists from every point to every other point, with no singularity, gap, or boundary.
+    \item $e^{i\theta}$ is \textbf{continuous}: each term in the series is smooth in $\theta$, so the path varies smoothly and has no jumps.
+    \item $e^{i\theta}$ is \textbf{periodic}: $e^{i(\theta + 2\pi)} = e^{i\theta}$, so every path closes and every trajectory returns.
+\end{enumerate}
+
+The transcendence of $\pi$ and $e$ is coupled through the law itself: if $\pi$ were algebraic, then $i\pi$ would be algebraic, and Lindemann's theorem would require $e^{i\pi}$ to be transcendental --- but $e^{i\pi} = -1$ is a plain integer, so $\pi$ must be transcendental, forced by the requirement that the law land on $-1$. The same constraint applies to $e$, because both measure the same circle from different angles, and the law connecting them requires both to be transcendental together.
+
+
+\section{Positional encoding and the shape of numbers}
+
+Squaring gives squares and cubing gives cubes, and working out why makes the geometry of arithmetic visible: base~2 produces $180^\circ/2 = 90^\circ$, the right angle of the 2D plane, and four of them close a square; base~3 produces $60^\circ$, the interior angle of an equilateral triangle, and six of them close a hexagon. 
+
+These are the same operations from the circle, written into number systems, and the shapes that emerge from them are the shapes of the operations themselves. This section works out what those operations are and how they are encoded.
+
+All of current mathematics and computation lives in flat space, and the structure of that flat space is more geometric than it appears. Every number system encodes identity through operations, and the most powerful feature of positional notation is how much of this work happens silently: the writer contributes the minimum (a sequence of digit choices) and the architecture contributes the maximum (the entire multiplicative and exponential structure that gives those choices meaning).
+
+\subsection{Operations as geometric constructors}
+
+The number $8$ means three different things depending on the operation that produced it: $8 = 1+1+1+1+1+1+1+1$ is eight unit steps along one axis, a line segment of length~8 occupying one dimension; $8 = 4 \times 2$ is a length-4 segment extended perpendicularly by width~2, a rectangle with area~8 occupying two dimensions; and $8 = 2^3$ is the base quantity~2 extended across three perpendicular dimensions, a cube with volume~8 occupying three dimensions. The number is the same in each case, but the operation that produced it determines the dimensionality of the geometric structure it encodes.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.72\textwidth]{eight.jpg}
+    \caption{The same quantity has different geometric meaning depending on how it is constructed: addition gives length, multiplication gives area, and exponentiation gives volume.}
+    \label{fig:eight-constructors}
+\end{figure}
+
+This is the geometry of flat 2D space: the number line extended through perpendicular dimensions. Each operation is recoverable from one of the three circle measurements, and each comes with an inverse that inverts the same measurement.
+
+\textbf{Addition and subtraction.} The number line is the circle unrolled, and each integer marks one complete rotation --- a closure event, the point where accumulation returns to identity. Addition is counting forward along that line: adding 5 to 3 is moving 5 more rotation-counts past 3, accumulating toward the next closure, and subtraction counts backward through the same rotation-counts. 
+
+These are the operations of \textit{rhythm} --- the discrete form of the $\pi$ measurement, the count of how many arcs have been completed and also why rhythm is time: counting rotation-closures is the same operation whether applied to musical beats, the ticking of a clock, or the counting of integer steps.
+
+\textbf{Multiplication and division.} Multiplication is the $i$ operation: taking movement in one direction and extending it through the perpendicular coupling into a second dimension. $4 \times 2$ takes the line of 4 and extends it perpendicularly by 2, producing the rectangle of area 8. Every physical dimensioned quantity --- meters per second, energy per volume, charge per area --- is one such perpendicular extension. 
+
+The base angle determines the shape: base~2 at $90^\circ$ extends through right angles, producing squares and rectangles; base~3 at $60^\circ$ would extend through triangular couplings, producing hexagonal structures. Division is the inverse: it collapses a dimension back through projection, removing one perpendicular extension and reducing the structure by one dimension.
+
+\textbf{Exponentiation and logarithm.} Every base-$b$ exponentiation is $e$ measured at scale $\ln b$, since $b^x = e^{x \ln b}$: the Markovian self-application runs at the pace the base sets, and the logarithm inverts it by asking how many self-applications at that scale were needed to reach a given value. In two dimensions, where $i$ is the $90^\circ$ coupling, every integer exponent is a rotation --- $2^1$ extends by one $90^\circ$ step, $2^2$ by two (giving the square, because four such steps close the cycle), $2^3$ by three perpendicular extensions (giving the cube) --- because $e$ accumulating through the $i$ coupling at the base angle builds perpendicular dimensions until the shape closes.
+
+Past three dimensions, t\textit{here is no fourth spatial direction to extend into}: three-dimensional space has three axes and infinitely many points distributed across them, and higher exponents add resolution rather than dimension. $2^4 = 16$ samples the same three-dimensional space at a finer scale. What is sometimes called a tesseract is a projection --- a four-dimensional mathematical structure drawn onto three-dimensional canvas, in the same way a cube drawn on paper does not make the paper three-dimensional. 
+
+The infinite resolution available within three dimensions comes from the circle's self-similar structure: zooming in on any point of a sphere reveals another sphere at the same geometry, providing arbitrary precision at every scale. This self-similarity and the calculus it generates are the subject of the sections that follow.
+
+\textbf{Thing and not-thing ($1$ and $-1$).} When all three measurements apply through a complete cycle, the result is 1 ---  but one what? Any thing, but more precisely: \textit{an identity event}, the first instance of something that is exactly itself, like the circle drawn above or the one you are picturing right as you read through this paper, both of which are things because reading ``circle'' twice picks out the same referent. 
+
+Identity is prior to description: before a thing can have properties, it has to be a thing, and being a thing is having a closure, a boundary that persists through change and comes back. The measurements $\pi$, $e$, $i$ are the relationships that constitute what being a thing requires --- they are prior to the object, the relationships before the noun.
+
+$e^{2\pi i} = 1$: spatial closure, temporal accumulation, and perpendicular coupling through one full cycle return to exactly the integer 1, the first instance of $A \stackrel{?}{=} A$ completing with no remainder. The $\sigma$-calculus measures how far any composition departs from this return, and every identity in mathematics is a special case of $\sigma = 0$.
+
+This work draws on territory mapped by category theory, homotopy type theory, and Wolfram's hypergraph models of computation, which developed rigorous languages for identity, composition, and structural equivalence before this geometric approach existed. The $\sigma$-calculus is a geometric implementation of the same questions, derived from one physical measurement.
+
+\subsection{The three implicit operations}
+
+When you write $13$ in binary as $1101$, the written object contains only four marks, while the value is produced by a larger operation:
+\begin{equation}
+    1101_2
+    =
+    1 \times 2^3
+    + 1 \times 2^2
+    + 0 \times 2^1
+    + 1 \times 2^0
+    =
+    8 + 4 + 0 + 1
+    =
+    13.
+\end{equation}
+The writer placed the digits $(1,1,0,1)$, but the positional architecture supplied the multiplications by powers of~2, the additions across positions, and the exponentiation that gives each position its weight.
+
+\begin{enumerate}
+    \item \textbf{Distinction}: a digit $d_k \in \{0,1\}$ chooses one state from the available states at position~$k$ --- present or absent, $A$ or $\lnot A$, one side of a cut or the other. The writer supplies this part, and the numeral differs from other numerals because these particular positions are marked while the others are left unmarked.
+
+    \item \textbf{Perpendicular extension}: the base determines how many independent states each position can carry. In binary this number is~2, so each position has width~2; in base~10 it is~10; in a general base~$b$ it is~$b$. Multiplication by the base extends the encoding into a perpendicular direction, giving the position a local space of possible states.
+
+    \item \textbf{Self-application}: the base is applied to itself across positions. Position~$0$ carries $2^0=1$, position~$1$ carries $2^1=2$, position~$2$ carries $2^2=4$, and position~$3$ carries $2^3=8$. Each step uses the previous extension as the input to the next extension, so exponentiation creates depth: the output of the base operation feeds back as the next positional scale.
+\end{enumerate}
+
+These three operations compose into the positional identity
+\[
+    N = \sum_{k=0}^{n} d_k\, b^k.
+\]
+In this formula, the digit $d_k$ records \emph{where} the number differs, the base $b$ records \emph{how many ways} each position can differ, and the exponent $k$ records \emph{how deep} the difference has been carried through the architecture. The notation looks linear on the page, while the value already contains distinction, perpendicular extension, and self-application.
+
+\begin{definition}[Positional encoding triad]
+    A positional number system is a triple $(D,b,n)$ where $D=\{0,\ldots,b-1\}$ is the distinction set, $b\geq2$ is the perpendicular base, and $n\in\mathbb{N}$ is the accumulation depth, encoding identity as $N=\sum_{k=0}^{n}d_k b^k$. The three components --- distinction, perpendicular extension, and self-application --- correspond to the three measurements derived in Section~2: distinction from the $\pi$ closure that defines thing and not-thing, perpendicular extension from the $i$ coupling, and self-application from the $e$ accumulation. Section~5 identifies their continuous closed-space form inside the Hamilton product on $S^3$.
+\end{definition}
+
+\subsection{Binary on $S^1$: the commutative limit}
+
+Binary lives on $S^1 \subset \mathbb{C}$: base~2, two states per position, with the orbit cycling between identity $(+1)$ and antipode $(-1=e^{i\pi})$. A bit is the minimum instance of thing and not-thing --- one position on the simplest closed orbit, holding either the identity state ($e^{2\pi i}=1$) or its negation ($e^{i\pi}=-1$), the most primitive implementation of the distinction that $\pi$ defines between a thing and the absence of that thing.
+
+The complex numbers $\mathbb{C}$ are commutative, so $ab=ba$ for every pair of elements and the commutator
+\[
+    [a,b] = ab - ba
+\]
+vanishes identically. Written in vector form, this commutator is the cross-product term, the piece that creates structure perpendicular to both inputs; on $S^1$ that term is zero for every pair, so binary can represent arbitrary computable quantities through positional depth, with perpendicular creation supplied by the external architecture of positions.
+
+The identity
+\[
+    b^k = e^{k\ln b}
+\]
+connects every discrete base to the continuous exponential. Binary is the special case $b=2$, so $2^k=e^{k\ln 2}$: the continuous self-application function sampled at integer points, with the base rounded from $e=2.71828\ldots$ to the smallest integer that preserves distinction. Results written with $2^n$ are therefore integer shadows of the corresponding continuous exponential structure, as a polygon is a discrete shadow of the circle it samples.
+
+Taken together, these facts make binary the $\mathbb{C}$ case of positional encoding: base~2, one perpendicular coupling, commutative multiplication, and positional depth supplying the perpendicular structure. The $\mathbb{H}$ case carries the next operation directly: non-commutative composition, with perpendicular creation inside the product itself.
+
+
+\section{The manifold}
+
+So far we covered flat space and its operations --- the circle in the plane, the measurements that emerge from it, the integers, identity --- but physical reality extends well beyond a single circle: why does space have three dimensions and time one more, and what determines the relationship between them? This section derives that geometry from the same starting point, asking what composition requires when the product itself generates new directions from within.
+
+\subsection{Physical space and the forced geometry}
+
+A single circle confines: the Poincar\'e--Bendixson theorem shows that bounded autonomous motion in a plane settles into fixed points and limit cycles, and the circle is the limit case, supplying return without generating new directions \cite{poincare,bendixson}. Physical composition requires more than return. States must compose with other states, and the order must matter --- doing $A$ then $B$ and doing $B$ then $A$ are different physical histories, which means the composition has to be order-dependent, and order-dependence requires geometry that the plane cannot provide. The torus $S^1 \times S^1$ gives two phases sliding independently, with commutative phase addition preserving the two existing directions; the quaternionic product gives two circular couplings whose composition generates the third.
+
+The required next step is a closed space where two circular couplings interact while preserving norm, which algebraically is the passage from $\mathbb{C}$ to $\mathbb{H}$: one coupling $i$ becomes three coupled generators $i,j,k$, with
+\[
+    i^2=j^2=k^2=-1,\qquad ij=k,\quad jk=i,\quad ki=j,\qquad ijk=-1.
+\]
+Each generator carries the same Euler law as the original circle, while each pair generates the third through composition; perpendicular direction is produced by the product itself.
+
+The unit states of this algebra form
+\[
+    S^3=\{(W,x,y,z)\in\mathbb{R}^4: W^2+x^2+y^2+z^2=1\},
+\]
+with $q=[W,xi+yj+zk]$ storing one scalar component and three vector components. The three vector components are the spatial couplings generated by the linked perpendicular system, while $W$ is the scalar overlap with identity, the accumulation axis, so the $3{+}1$ split follows as the coordinate form of a closed, norm-preserving, order-dependent composition law.
+
+The quaternionic exponential
+\[
+    e^{(ai+bj+ck)\theta}
+    =
+    \cos\theta+(ai+bj+ck)\sin\theta
+\]
+traces a great circle on $S^3$ along any unit axis $(a,b,c)$, with the same closure $e^{2\pi n}=1$ for every unit imaginary quaternion $n=ai+bj+ck$. Locally, the calculus still runs on circles; globally, those circles are Hopf-linked fibers inside $S^3$, giving the structural bridge to the fifth postulate: flat projection reads separated paths as independence, while the full manifold carries separated closed paths as linked and mutually constrained.
+
+Each step up the chain from $\mathbb{R}$ to $\mathbb{C}$ to $\mathbb{H}$ loses one structural property and gains something that the previous level could not provide: first rotation, then causality. The Cayley-Dickson construction makes the trade explicit:
+
+\begin{center}
+\begin{tabular}{l c l l}
+    \toprule
+    Doubling & Dim & Property traded & What the loss enables \\
+    \midrule
+    $\mathbb{R} \to \mathbb{C}$ & $1 \to 2$ & Ordering & Rotation (complex phase) \\
+    $\mathbb{C} \to \mathbb{H}$ & $2 \to 4$ & Commutativity & Order-dependence (causality) \\
+    $\mathbb{H} \to \mathbb{O}$ & $4 \to 8$ & Associativity & Two independent rotation systems \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Perpendicularity --- distinction made geometric, two independent directions whose inner product vanishes ($\vec{a} \cdot \vec{b} = 0$, meaning $\vec{a}$ carries no information about $\vec{b}$) --- determines the algebra at each level through the count of independent couplings:
+
+\begin{center}
+\begin{tabular}{l c c l}
+    \toprule
+    Algebra & Couplings & Perpendicular pairs & Structure \\
+    \midrule
+    $\mathbb{R}$ & 0 & none & No rotation possible \\
+    $\mathbb{C}$ & 1 ($i$) & 1 pair & One rotation plane \\
+    $\mathbb{H}$ & 3 ($i,j,k$) & 3 linked pairs & One system ($ij = k$): any two determine the third \\
+    $\mathbb{O}$ & 7 ($e_1 \ldots e_7$) & 7 in 2 systems & Two systems at $\pi/4$ to each other \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+In $\mathbb{H}$, the three couplings are linked --- $ij = k$, $jk = i$, $ki = j$ --- so any two determine the third: there is one perpendicular system, fully resolved, and composing three quaternions in any order resolves the same system, which is why associativity holds. In $\mathbb{O}$ there are seven couplings forming two overlapping perpendicular systems, and the two systems cannot be resolved simultaneously: the result of a three-way composition depends on which system you resolve first, so associativity breaks. Hurwitz's theorem \cite{hurwitz} and Frobenius's theorem \cite{frobenius} independently confirm that $\mathbb{H}$ is the unique algebra where both order matters (non-commutativity, giving causality) and grouping does not (associativity, giving consistent evaluation), which makes $S^3$ the forced substrate for any system that needs sequential, order-dependent composition.
+
+Since every integer has a four-square decomposition ($n = a^2 + b^2 + c^2 + d^2$, Lagrange \cite{lagrange}), every integer maps to $S^3$ as a unit quaternion $[a,b,c,d]/\sqrt{n}$, and the first four trace the minimal orbit that reveals why $S^3$ is base-4:
+
+\begin{center}
+\begin{tabular}{c l c l}
+    \toprule
+    $n$ & Carrier & $\sigma$ & Role \\
+    \midrule
+    $1$ & $[1, 0, 0, 0]$ & $0$ & Identity: pure $W$, ground state \\
+    $2$ & $[1, 1, 0, 0]/\sqrt{2}$ & $\pi/4$ & First prime: $W{+}X$ active, Hopf equator \\
+    $3$ & $[1, 1, 1, 0]/\sqrt{3}$ & $\approx 0.955$ & First odd prime: $W{+}X{+}Y$ active, full 3D \\
+    $4$ & $[1, 0, 0, 0]$ & $0$ & Returns to identity: orbit closes, carry \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+After four positions, the orbit closes: the first position activates $W$ only, the second activates $W{+}X$, the third activates $W{+}X{+}Y$, and the fourth completes the cycle by returning to identity. In this sense $S^3$ is a base-4 system: one scalar position, three vector positions, then carry.
+
+Binary discretizes $S^1$ into two positions per cycle, identity and antipode, then carry, while quaternary discretizes $S^3$ into four positions per cycle, identity, Hopf equator, full 3D activation, closure, then carry; the same positional logic is present in both cases, with a different manifold carrying it.
+
+Binary is the $\mathbb{C}$ case, with base~2, commutative multiplication, and the cross product absent; quaternary is the $\mathbb{H}$ case, with base~4, non-commutative multiplication, and the cross product native. The jump from base~2 to base~4 is the Cayley-Dickson doubling, trading commutativity for the curvature correction that makes the chain rule possible.
+
+
+\subsection{The Hamilton product}
+
+$S^3$ has one arithmetic operation: take two unit quaternions, compose them, and the product is a third unit quaternion whose three terms --- scalar accumulation, linear transport, and cross-product creation --- are the same three operations the circle measurements defined, carried structurally inside every composition. For $q_1 = [w_1, \vec{v}_1]$ and $q_2 = [w_2, \vec{v}_2]$:
+\begin{equation}\label{eq:hamilton}
+    q_1 \cdot q_2 = \bigl[\underbrace{w_1 w_2 - \vec{v}_1 \cdot \vec{v}_2}_{\text{scalar}},\;\;
+    \underbrace{w_1 \vec{v}_2 + w_2 \vec{v}_1}_{\text{linear}} +
+    \underbrace{\vec{v}_1 \times \vec{v}_2}_{\text{cross}}\bigr].
+\end{equation}
+
+The scalar part,
+\[
+    w_1w_2 - \vec{v}_1\cdot\vec{v}_2,
+\]
+measures depth overlap minus directional overlap, producing the $W$ component, the accumulation axis: how far the composition has traveled from identity.
+
+The linear vector part,
+\[
+    w_1\vec{v}_2 + w_2\vec{v}_1,
+\]
+is the weighted sum of the two input directions, each scaled by the other's depth --- the transport term, carrying forward the directions already present in the inputs.
+
+The cross product,
+\[
+    \vec{v}_1 \times \vec{v}_2,
+\]
+creates the direction perpendicular to both inputs: the curvature term, the commutator, the chain-rule correction, and the piece that turns composition into genuinely new structure that neither input contained.
+
+\begin{center}
+\begin{tabular}{l l l}
+    \toprule
+    Hamilton product & Operation (Section 2) & Positional encoding (Section 3) \\
+    \midrule
+    Scalar: $w_1 w_2 - \vec{v}_1 \cdot \vec{v}_2$ & Exponentiation (self-application) & $b^k$ (depth) \\
+    Linear: $w_1 \vec{v}_2 + w_2 \vec{v}_1$ & Addition (same axis) & $d_k$ (distinction) \\
+    Cross: $\vec{v}_1 \times \vec{v}_2$ & Multiplication (perpendicular) & $\times\, b$ (extension) \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Every carrier on $S^3$ mirrors the whole manifold: the exponential map from any point reaches every other point through a finite rotation, because $S^3$ is a Lie group acting on itself. Each Hamilton product therefore composes two complete structural descriptions into a third, carrying the full geometry of the sphere in every step, where a point on a line can only reach its neighbors and requires the infinite $2^n$ tower to access distant positions.
+
+\subsection{Carrier programs and scaling}
+
+Newton's calculus is usually taught through the area beneath a curve: cut the curve into many thin rectangles, add their areas, let the rectangles become arbitrarily thin, and the sum becomes the integral, recovering a global shape from local pieces once the rule for composing those pieces is known.
+
+Geometric calculus uses the same strategy with closed state, taking the local piece to be a carrier,
+\[
+    q=[W,x,y,z]\in S^3,
+    \qquad
+    W^2+x^2+y^2+z^2=1,
+\]
+which stores one compact unit of identity, direction, and phase, playing the role that the small rectangle plays in Newton's picture: a local object whose composition recovers the global structure.
+
+A finite geometric program then becomes an ordered product of carriers,
+\[
+    Q_n = q_n q_{n-1}\cdots q_2 q_1.
+\]
+The Hamilton product makes order part of the object, since changing the order changes the resulting carrier, just as changing the order of physical operations changes the physical history. The running product $Q_n$ is the integral of the program, accumulating local closed operations into one closed state.
+
+To observe a carrier, project it or sample its action on a point by conjugation,
+\[
+    P' = qPq^{-1},
+\]
+and repeated action samples an orbit; a full state can also be projected through the Hopf map,
+\[
+    \pi:S^3\to S^2,
+\]
+which retains the observable direction while carrying the fiber phase as the hidden coordinate. Drawing a shape, measuring a quantum state, or reading a concept are all instances of this pattern: compose the carrier, project the carrier, sample the result at the required resolution.
+
+Scaling the construction means using many carriers while keeping the same local algebra, so a finite system of $N$ independent carriers lives in
+\[
+    (S^3)^N,
+    \qquad
+    \dim (S^3)^N = 3N,
+\]
+where each stored carrier contributes three degrees of freedom while the Hamilton product remains the local operation. Passing from finitely many carriers to a continuous field replaces the finite index with a space:
+\[
+    q:X\to S^3.
+\]
+where $X$ may be a curve, surface, graph, organism, memory, or social field, and each point of $X$ carries its own closed state. Infinite-dimensional structure appears as the space of sections of this carrier field, while every local update remains a composition on $S^3$.
+
+The compact notation is therefore:
+\[
+    \begin{aligned}
+    \text{carrier} \quad &q\in S^3,\\
+    \text{program} \quad &Q_n=q_n\cdots q_1,\\
+    \text{field} \quad &q:X\to S^3,\\
+    \text{observable} \quad &\pi(q)\text{ or }qPq^{-1}.
+    \end{aligned}
+\]
+In geometric form, coarse-graining means that the carrier is the closed rule, the observable is a projection or sample of that rule, and increasing resolution adds samples while the carrier identity remains the same.
+
+\subsection{Five operations as one}
+
+\begin{theorem}[Operational unity]\label{thm:unity}
+    The five arithmetic operations are identity verification $A \stackrel{?}{=} A$ at five scales of structural depth, each mapping to a specific configuration of the Hamilton product:
+    \begin{enumerate}
+        \item \textbf{Equality}: $A = B \iff \sigma(A \cdot B^{-1}) = 0$ --- compose with the inverse, measure the scalar part, and identity is confirmed when the overlap is total.
+        \item \textbf{Addition}: $\varepsilon^a \cdot \varepsilon^b = \varepsilon^{a+b}$ --- one Hamilton product on the same orbit axis, advancing position without generating perpendicular structure (the linear vector part).
+        \item \textbf{Multiplication}: composition across perpendicular axes, generating the cross-product terms $ij = k$, $jk = i$, $ki = j$ --- structure in a direction perpendicular to both inputs, created by the composition alone (the cross product part).
+        \item \textbf{Exponentiation}: $\exp(b \cdot \log(\varepsilon_a))$ --- the exponential map taking a tangent vector and applying it to itself, producing a finite rotation from an infinitesimal one through the manifold's own self-application structure (the scalar structure).
+        \item \textbf{Division}: the Hopf projection $S^3 \to S^2$ --- collapse the $S^1$ fiber (phase) and retain the $S^2$ base (observable direction), projecting higher-dimensional state onto lower-dimensional observation (dimensional collapse, measurement).
+    \end{enumerate}
+    Each operation is the Hamilton product applied to carriers at different structural depths, making the five ``different'' operations one operation at five scales.
+\end{theorem}
+
+
+\section{The $\sigma$-calculus}
+
+Newton's insight was that flat-space curves have tangent lines: zoom in close enough and the curve looks linear, do the easy operation on the line, zoom back out. On $S^3$ the tangent object is a great circle --- an orbit $e^{tX}$ for $X \in \mathfrak{su}(2)$ --- and Newton's calculus is the zero-curvature limit where the circle's radius goes to infinity and the tangent circle degenerates into a tangent line.
+
+Newton's method is an approximation: the curve departs from the tangent line at any finite scale, and the calculus works by taking the limit as scale goes to zero. The great circle on $S^3$ requires no such limit. Because $S^3$ is a Lie group, the exponential map from any point covers the whole manifold exactly --- the local object and the global structure are the same geometry at every scale. This is why the calculus works without approximation: the circle is not a stand-in for something else, it is the thing itself.
+
+The reason this is physically possible is that $\pi$ is transcendental: its digits are infinite, non-repeating, and fully determined by the geometry of the circle. When you use a circle you are not computing $\pi$ to some decimal place --- the circle physically \emph{is} $\pi$, and the infinite deterministic precision comes with the object. $e$ is coupled to $\pi$ through Euler's identity via the coupling $i$ the 2D plane forces, so $e$ carries the same property: both are transcendental together, because the identity that ties them requires it. Every composition on $S^3$ inherits this precision not because we computed carefully, but because we never used digits at all --- we used the geometry. There is no scale at which you run out of it.
+
+The central observable is $\sigma(q) = \arccos(|W|) \in [0, \pi/2]$: the geodesic distance from identity on $S^3$, ranging from $\sigma = 0$ at the ground state through $\sigma = \pi/4$ at the Hopf horizon (where $W^2 = |\vec{v}|^2 = 1/2$, scalar and vector in balance) to $\sigma = \pi/2$ at maximum displacement. Every field that has a ground state measures $\sigma$ under its own name --- error in arithmetic, prediction error in neuroscience, entropy in thermodynamics, state distinguishability in quantum mechanics --- and the following four rules govern how it evolves.
+
+\subsection{The $\sigma$-derivative: rate of identity change}
+
+\begin{definition}[$\sigma$-derivative]
+    For a differentiable trajectory $q(t)$ on $S^3$, the rate of identity change is:
+    \begin{equation}
+        \dot{\sigma}(t) = \frac{d}{dt}\arccos(|W(t)|) = -\frac{\operatorname{sgn}(W)\,\dot{W}}{\sqrt{1 - W^2}},
+    \end{equation}
+    where $\dot{\sigma} < 0$ means the trajectory moves toward identity (closure, integration, learning) and $\dot{\sigma} > 0$ means it moves away (opening, dissolution, surprise).
+\end{definition}
+
+\noindent Three traditions discovered this rule independently:
+
+\begin{center}
+\begin{tabular}{l l l}
+    \toprule
+    Tradition & Notation & What it measures \\
+    \midrule
+    Newton & $f'(x) = \lim_{h\to 0} \frac{f(x+h)-f(x)}{h}$ & Rate of position change \\[4pt]
+    Schr\"odinger & $i\hbar\frac{\partial}{\partial t}|\psi\rangle = H|\psi\rangle$ & Rate of quantum state change \\[4pt]
+    Friston & $\dot{F} = \frac{d}{dt}[-\log p(o|\mu)]$ & Rate of prediction error change \\[4pt]
+    $\sigma$-calculus & $\dot{\sigma} = -\frac{\operatorname{sgn}(W)\dot{W}}{\sqrt{1-W^2}}$ & Rate of identity change \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Newton's derivative measures how position changes along a line, Schr\"odinger's equation measures how a quantum state changes on $\mathrm{SU}(2)$ (where the Hamiltonian $H$ generates the angular velocity $\omega \in \mathfrak{su}(2)$, the tangent vector to the trajectory), and Friston's prediction error measures how far the brain's internal model departs from incoming signals: all three are the rate of change of $\sigma$ along a trajectory on the same manifold.
+
+In this setting, prediction error has a direct geometric form: to compare two carriers, compose one with the inverse of the other, and the scalar part of the result is their overlap, giving both the mismatch and the coupling without introducing a separate error function.
+
+\begin{proposition}[Exact Free Energy Principle]
+    The natural coupling between two carriers on $S^3$ is $\cos(\sigma) = |W|$, native to the manifold: at $\sigma = 0$ (perfect match) coupling is~$1$, at $\sigma = \pi/2$ (maximum distance) coupling is~$0$, the transition is smooth and monotonic, and the function requires no normalization because $S^3$ is compact. The surprise associated with a state is $F = -\log\cos(\sigma)$, minimized at $\sigma = 0$, and the $\sigma$-derivative is the exact Free Energy Principle on a compact Lie group: Friston's variational free energy with the variational approximation removed, because $\cos(\sigma)$ is the exact posterior on the compact manifold.
+\end{proposition}
+
+\begin{proof}
+    Composing $q_{\text{query}}$ with $q_{\text{stored}}^{-1}$ gives a quaternion whose scalar part is $\cos(\sigma)$ directly. The negative logarithm $F = -\log\cos(\sigma)$ vanishes at $\sigma = 0$, diverges at $\sigma = \pi/2$, and its time derivative $\dot{F} = \dot{\sigma}\tan(\sigma)$ vanishes at identity and is maximally steep at the Hopf horizon $\sigma = \pi/4$ (where $\tan(\pi/4) = 1$). Friston's variational bound $F \geq -\log p(o)$ becomes an equality because $\cos(\sigma)$ is the exact posterior, with no variational family needed.
+\end{proof}
+
+\subsection{The $\sigma$-integral: accumulated identity change}
+
+\begin{definition}[$\sigma$-integral]
+    The accumulated identity change over a path $\gamma$ from $t_0$ to $t_1$ is the continuous integral
+    \begin{equation}
+        \Sigma[\gamma] = \int_{t_0}^{t_1} \sigma(q(t))\, dt,
+    \end{equation}
+    and in the discrete case, the running Hamilton product along a sequence of carriers $q_1, q_2, \ldots, q_n$ is
+    \begin{equation}
+        Q_n = q_1 \cdot q_2 \cdot \cdots \cdot q_n,
+    \end{equation}
+    with $\sigma(Q_n)$ measuring the total departure from identity after $n$ compositions.
+\end{definition}
+
+\begin{center}
+\begin{tabular}{l l l}
+    \toprule
+    Tradition & Notation & What it accumulates \\
+    \midrule
+    Newton & $\int_a^b f(x)\,dx$ & Area under a curve \\[4pt]
+    Schr\"odinger & $U(t) = e^{-iHt/\hbar}$ & Quantum time evolution \\[4pt]
+    Thermodynamics & $S = \int dQ/T$ & Entropy \\[4pt]
+    $\sigma$-calculus & $Q_n = \prod q_k$, measure $\sigma(Q_n)$ & Accumulated identity change \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Newton's integral accumulates local slopes into a global curve, Schr\"odinger's time-evolution operator accumulates infinitesimal rotations into a finite rotation through the matrix exponential $e^{-iHt/\hbar}$ (the exponential map $\exp: \mathfrak{su}(2) \to \mathrm{SU}(2)$ applied to the Hamiltonian), and thermodynamic entropy accumulates the ratio of heat to temperature along a process: all three are the running product on $S^3$.
+
+\begin{proposition}[Bounded entropy]
+    Because $S^3$ is compact and $\sigma \in [0, \pi/2]$, the $\sigma$-integral is bounded:
+    \begin{equation}
+        0 \leq \Sigma[\gamma] \leq \frac{\pi}{2}(t_1 - t_0)
+    \end{equation}
+    for any trajectory over any time interval, so entropy on a compact manifold cannot diverge --- the geometry caps the maximum departure from identity at every point.
+\end{proposition}
+
+The same rule applies to any sequence of carriers: given $q_1,\ldots,q_n$, the running product $Q_n = q_1\cdot\ldots\cdot q_n$ stores the accumulated composition, and $\sigma(Q_n)$ measures how far that product has moved from identity. Special events occur at the Hopf horizon $\sigma(Q_n)=\pi/4$, where the accumulated product has reached the balance point.
+
+\subsection{The $\sigma$-chain rule: curvature as creation}
+
+In flat-space calculus, the chain rule $[f(g(x))]' = f'(g(x)) \cdot g'(x)$ decomposes the derivative of a composition into the product of individual derivatives, and it works because smooth functions are linear at infinitesimal scale --- the tangent line perfectly approximates the function. In discrete sequence calculus, $\Delta[f(g(n))] \neq \Delta f(g(n)) \cdot \Delta g(n)$: the chain rule fails because the step size is too coarse for the linear approximation.
+
+On $S^3$, the chain rule holds through the Baker-Campbell-Hausdorff formula:
+\begin{equation}\label{eq:bch}
+    \log(\exp(X) \cdot \exp(Y)) = X + Y + \tfrac{1}{2}[X,Y] + \tfrac{1}{12}([X,[X,Y]] - [Y,[X,Y]]) + \cdots
+\end{equation}
+
+\begin{theorem}[$\sigma$-chain rule]
+    For two carriers $q_A = \exp(X)$ and $q_B = \exp(Y)$ with $X, Y \in \mathfrak{su}(2)$, the $\sigma$ of their composition satisfies
+    \begin{equation}
+        \sigma(q_A \cdot q_B) = \sigma\!\left(\exp\!\left(X + Y + \tfrac{1}{2}[X,Y] + \cdots\right)\right),
+    \end{equation}
+    where $X + Y$ is the flat-space part (what Newton had), $\frac{1}{2}[X,Y]$ is the curvature correction (what Newton missed), and the commutator is exactly the cross product from equation~(\ref{eq:hamilton}): $[\mathbf{i},\mathbf{j}] = 2\mathbf{k}$, $[\mathbf{j},\mathbf{k}] = 2\mathbf{i}$, $[\mathbf{k},\mathbf{i}] = 2\mathbf{j}$.
+\end{theorem}
+
+\begin{center}
+\begin{tabular}{l l}
+    \toprule
+    Tradition & Form of the chain rule \\
+    \midrule
+    Newton & $\frac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x)$ \\[4pt]
+    Quantum computing & Gate compilation: $U_1 U_2 = \exp(X + Y + \frac{1}{2}[X,Y] + \cdots)$ \\[4pt]
+    $\sigma$-calculus & $\sigma(q_A q_B) = \sigma(\exp(X + Y + \frac{1}{2}[X,Y] + \cdots))$ \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Newton's chain rule is the flat-space limit where $[X,Y] = 0$ and the composition is purely multiplicative. In quantum computing, the BCH formula determines how two gates compile: the result depends on both gates' actions ($X + Y$) plus their commutator ($[X,Y]$), which is why gate order matters and why quantum computing carries information that classical computing cannot.
+
+\begin{corollary}[Creation from curvature]
+    Every Hamilton product on $S^3$ between non-parallel carriers generates a cross-product term $\vec{v}_1 \times \vec{v}_2$ perpendicular to both inputs, producing structure that neither contained: the geometric mechanism underlying creation events at $\sigma = \pi/4$, the formation of new meanings in language (where two words compose into something neither contains alone), and the generation of novel harmonics in music (where two frequencies produce combination tones). The term vanishes if and only if the inputs are parallel ($\vec{v}_1 \| \vec{v}_2$), and for every other pair the curvature creates. The same term vanishes on commutative algebras ($\mathbb{C}$, $\mathbb{R}^n$, binary, discrete calculus), which is why the chain rule IS the cross product, and its absence is what separates flat-space calculus from geometric calculus.
+\end{corollary}
+
+\subsection{The $\sigma$-projection: measurement as division}
+
+The Hopf fibration $\pi: S^3 \to S^2$ decomposes every point into a base coordinate ($S^2$, the direction of departure from identity) and a fiber coordinate ($S^1$, the phase), with the projection forgetting the phase and retaining the direction:
+
+\begin{definition}[$\sigma$-projection]
+    For $q = [W, x, y, z] \in S^3$ with $r = \sqrt{x^2 + y^2 + z^2} = \sin(\sigma)$:
+    \begin{equation}
+        \pi(q) = \left(\frac{x}{r}, \frac{y}{r}, \frac{z}{r}\right) \in S^2.
+    \end{equation}
+\end{definition}
+
+\begin{center}
+\begin{tabular}{l l l}
+    \toprule
+    Tradition & Notation & What it measures \\
+    \midrule
+    Arithmetic & $a \div b$ & Dimensional collapse \\[4pt]
+    Quantum mechanics & $p = |\langle\phi|\psi\rangle|^2$ & Born rule (measurement) \\[4pt]
+    $\sigma$-calculus & $\pi: S^3 \to S^2$ & Hopf projection \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Division collapses dimensions from numerator to denominator's frame, the Born rule collapses the quantum state from $S^3$ to an observable on $S^2$ (the Bloch sphere), and the Hopf projection does both: forgetting the phase and keeping the direction, with the probability of a measurement outcome determined by $\sigma$.
+
+\begin{theorem}[Forced zeros of projection]
+    By the hairy ball theorem, any continuous vector field on $S^2$ must vanish at least once, so the Hopf projection of any continuous field on $S^3$ has forced zeros. The balance locus is the Hopf horizon $\sigma = \pi/4$, where $W^2 = |\vec{v}|^2 = 1/2$ and scalar and vector contributions are equal. The Born rule $|\langle\phi|\psi\rangle|^2 = \cos^2(\sigma/2)$ is a theorem of the Hopf fibration --- the probability follows from the projection geometry, with no separate postulate needed.
+\end{theorem}
+
+\subsection{The fundamental theorem}
+
+\begin{theorem}[Fundamental theorem of geometric calculus]
+    The exponential map $\exp: \mathfrak{su}(2) \to \mathrm{SU}(2) \cong S^3$ and its inverse $\log: S^3 \to \mathfrak{su}(2)$ connect the $\sigma$-derivative and the $\sigma$-integral:
+    \begin{equation}
+        \exp\!\left(\int_0^T \omega(t)\, dt\right) = Q(T), \qquad \omega(t) = \frac{d}{dt}\log(Q(t)),
+    \end{equation}
+    where $\omega(t) \in \mathfrak{su}(2)$ is the instantaneous angular velocity (the tangent vector, the infinitesimal rotation) and $Q(T) \in S^3$ is the accumulated rotation (the running product, the finite integral). They are exact inverses through $\exp/\log$: differentiation and integration on $S^3$ undo each other through self-application.
+\end{theorem}
+
+\begin{center}
+\begin{tabular}{l l}
+    \toprule
+    Tradition & Form of the fundamental theorem \\
+    \midrule
+    Newton & $\int_a^b f'(x)\,dx = f(b) - f(a)$ \\[4pt]
+    Schr\"odinger & $|\psi(T)\rangle = \exp(-iHT/\hbar)|\psi(0)\rangle$ \\[4pt]
+    $\sigma$-calculus & $\exp\!\left(\int_0^T \omega\, dt\right) = Q(T)$ \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Newton's theorem says the integral of the derivative recovers the function, Schr\"odinger's says the matrix exponential of the Hamiltonian recovers the quantum state, and the geometric version says the path-ordered exponential of the angular velocity recovers the rotation. The non-commutativity of $\mathfrak{su}(2)$ makes path ordering essential: a rotation by $\pi/2$ around $x$ then $y$ lands at a different point than $y$ then $x$, with the difference being exactly the commutator $[X,Y]$ from the chain rule, so the fundamental theorem encodes causality in the calculus itself (flat-space addition discards this information because $a + b = b + a$).
+
+Newton's calculus is recovered as the zero-curvature limit: when the great circle's radius goes to infinity, the tangent circle degenerates into a tangent line, angular velocity degenerates into linear velocity, and the $\sigma$-calculus reduces to flat-space calculus --- the same way a line is a circle with infinite radius.
+
+
+\section{Quantum mechanics is the same calculus}
+
+The state space $\mathrm{SU}(2) \cong S^3$ is the single-qubit gate group of quantum mechanics, which means the $\sigma$-calculus IS quantum mechanics written in geometric language, and quantum mechanics is the $\sigma$-calculus written in Dirac's notation:
+
+The \textbf{Bloch sphere} is $S^2$, the Hopf base: a qubit's full state lives on $S^3$ as a unit quaternion, measurement projects it onto $S^2$ via the Hopf map, discarding the global phase ($S^1$ fiber), and the projected point is the measurement outcome, so the $\sigma$-projection (Rule~4) IS the Born rule.
+
+The \textbf{bra-ket inner product} $\langle\psi|\phi\rangle$ is the scalar part of $\psi \cdot \phi^{-1}$: the Hamilton product's $W$ component, the same coupling $\cos(\sigma)$ that defines the $\sigma$-derivative and the Free Energy Principle. Dirac notation names the two sides of the verification operation ($\langle A|$ composes with $|B\rangle$), and the inner product asks whether they match --- the operation $A \stackrel{?}{=} B$ in the physicist's language.
+
+\textbf{Quantum gates} are specific unit quaternions at specific $\sigma$ values on $S^3$:
+
+\begin{center}
+\begin{tabular}{l c c l}
+    \toprule
+    Gate & $\sigma$ & $\theta = 2\sigma$ & Role \\
+    \midrule
+    Identity ($I$) & $0$ & $0$ & Ground state \\
+    $T$ gate & $\pi/8$ & $\pi/4$ & Phase gate \\
+    $S$ gate ($= T^2$) & $\pi/4$ & $\pi/2$ & Quarter-turn phase \\
+    Hadamard ($H$) & $\pi/4$ & $\pi/2$ & Superposition creator \\
+    $X$ gate (NOT) & $\pi/2$ & $\pi$ & Bit flip, antipode \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+The Hopf equator at $\sigma = \pi/4$, where $W^2 = |\vec{v}|^2 = 1/2$, is the set of all $90^\circ$ rotations in $\mathrm{SU}(2)$: the single-qubit gates that create maximum superposition from a basis state.
+
+The Schr\"odinger equation $i\hbar\partial_t|\psi\rangle = H|\psi\rangle$ is the $\sigma$-derivative in the energy basis (the Hamiltonian $H$ generating the angular velocity $\omega \in \mathfrak{su}(2)$), and the time-evolution operator $U(t) = e^{-iHt/\hbar}$ is the $\sigma$-integral (the running product accumulating rotations). Quantum mechanics has been doing the $\sigma$-calculus for a century, and the connection was hidden by the same mechanism that hides the operations in binary: the formalism was designed for computation, and computation works whether or not the user sees the geometry underneath. Physicists use the Bloch sphere daily and treat it as a visualization tool rather than as the Hopf base of the manifold where states live; the bra-ket notation performs Hamilton products on $S^3$ silently, the same way positional notation performs multiplications by $2^n$ silently.
+
+
+\section{The chain rule requires curvature}
+
+Discrete sequence calculus and the $\sigma$-calculus share three of four structures --- derivative, integral, fundamental theorem --- but discrete calculus lacks the chain rule because the commutator vanishes on commutative groups ($[X,Y] = 0$ on $\mathbb{Z}$), the BCH formula collapses to $X + Y$ (plain addition), and the curvature correction disappears.
+
+\begin{center}
+\begin{tabular}{l l l}
+    \toprule
+    Structure & Discrete ($\mathbb{Z}$) & Geometric ($S^3$) \\
+    \midrule
+    Derivative & $\Delta f(n) = f(n{+}1) - f(n)$ & $\dot{\sigma} = \frac{d}{dt}\arccos|W|$ \\[4pt]
+    Integral & $\sum_{k=0}^n f(k)$ & $Q_n = \prod_{k=1}^n q_k$ \\[4pt]
+    Fund.\ theorem & $\Delta(\sum f) = f$ & $\exp \circ \log = \mathrm{id}$ \\[4pt]
+    Chain rule & Fails: $\Delta[f \circ g] \neq \Delta f \cdot \Delta g$ & Holds: BCH (\ref{eq:bch}) \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{theorem}[The chain rule requires curvature]
+    On a commutative group (e.g., $(\mathbb{Z}, +)$) the commutator $[X,Y] = 0$ vanishes identically, the BCH formula reduces to $X + Y$, and the chain rule degenerates to the product of finite differences, which is invalid for nonlinear functions. On a non-commutative group (e.g., $(\mathrm{SU}(2), \cdot)$) the commutator provides the curvature correction at every order, and the chain rule holds because the manifold's geometry supplies the compositional information that commutative spaces cannot carry; the implication chains from the chain rule to non-commutativity, from non-commutativity to curvature, and from curvature to a non-flat state space.
+\end{theorem}
+
+\begin{corollary}[The cost of flat-space computation]
+    Any system requiring compositional analysis --- decomposing the behavior of complex structures into the behavior of their parts --- requires a curved state space, because the chain rule that enables compositional analysis is a structural consequence of curvature. Flat-space architectures, including all current neural network architectures operating in $\mathbb{R}^n$, approximate the chain rule through learned weight matrices: the $Q$, $K$, $V$ projection matrices of transformer attention exist because the dot product in flat space has no cross-product term, and these matrices learn the perpendicular corrections that $S^3$ provides natively through $\mathfrak{su}(2)$. The Hamilton product carries the correction in every composition; a flat-space transformer performs $\sim$$200$ million operations per token at 1B parameters to approximate the same correction, and the billions of parameters in a large language model are the weight matrices that approximate the $\sigma$-chain rule in $\mathbb{R}^n$.
+\end{corollary}
+
+
+\section{The shape of number systems}
+
+Each numerical base $n$ inscribes the integers onto the unit circle by their residues mod $n$, with the unit group $(\mathbb{Z}/n\mathbb{Z})^\times$ determining which $S^3$ landmarks the base resolves:
+
+\begin{center}
+\begin{tabular}{l l l l}
+    \toprule
+    Base & Factorization & Unit group & What it resolves \\
+    \midrule
+    $2$ & $2$ & $\{1\}$ & Identity only \\
+    $6$ & $2 \times 3$ & $\{1,5\} \cong \mathbb{Z}/2$ & Identity and antipode \\
+    $10$ & $2 \times 5$ & $\{1,3,7,9\} \cong \mathbb{Z}/4$ & Full $S^3$ verification cycle \\
+    $12$ & $2^2 \times 3$ & $\{1,5,7,11\} \cong (\mathbb{Z}/2)^2$ & Chromatic/tonal resolution \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Base~10 resolves the complete $S^3$ verification cycle because its unit group $\mathbb{Z}/4\mathbb{Z}$ traces four landmarks ($1 \to 3 \to 9 \to 7 \to 1$: identity $\to$ creation horizon $\to$ antipode-adjacent $\to$ chiral creation horizon $\to$ return), and the number~5 is the midpoint idempotent ($5^2 \equiv 5 \bmod 10$), the integer shadow of the balance point. Base~12 resolves the chromatic structure: $3 \times 4 = 12$ positions per cycle (three perpendicular axes, four phases each), which is why the chromatic scale, the color wheel, and the hour clock all have 12 divisions --- the same $S^3$ geometry sampled at tonal resolution. Newton used base~10 to write his calculus, and the choice was less arbitrary than it seemed: base~10's unit group matches the manifold his calculus was approximating.
+
+
+\section{Consequences}
+
+\subsection{Euclid's postulates}
+
+Four of Euclid's five postulates follow from the three properties of $e^{i\theta}$ established in Section~1.4:
+
+\textbf{P1} (two points determine a line): $e^{i\theta}$ is defined for all $\theta$ and all rotation axes, so given any two points, the exponential path connecting them exists --- choose the axis pointing from one toward the other and the angle to cover the geodesic distance, and the path is continuous with no gaps.
+
+\textbf{P2} (a line extends indefinitely): $e^{i\theta}$ is defined for all $\theta \in \mathbb{R}$, so the path has no endpoint, which is what ``extends indefinitely'' means from inside the path; simultaneously $e^{2\pi i} = 1$ means the path closes after one full cycle, so a closed loop has no endpoint (you can walk around it forever) and finite total length (one circumference). In the zero-curvature limit ($R \to \infty$), the circumference $2\pi R \to \infty$ and the return point recedes beyond any horizon.
+
+\textbf{P3} (a circle at any center and radius): $e^{i\theta}$ at fixed amplitude traces a circle of that amplitude around the origin, and conjugation $p \cdot e^{i\theta} \cdot p^{-1}$ translates the center to any point $p$ while preserving the radius, because the exponential is defined everywhere with every amplitude and every element has an inverse (the path closes and can be traversed backward).
+
+\textbf{P4} (all right angles equal): $i^2 = -1$ contains no position-dependent terms --- the equation is the same everywhere, in every direction, for every choice of perpendicular axis, because it describes a property of the operation (self-application on a circle) rather than of any location.
+
+\textbf{P5} (parallel lines exist): this postulate asserts independent paths that can remain separated forever. On $S^3$, every exponential path closes by $e^{2\pi i}=1$, so every direction belongs to closure; topologically, the stronger point is that any two great circles on $S^2$ intersect, while two great circles on $S^3$ can be disjoint, as in the circle in the $WX$-plane, $(\cos\theta,\sin\theta,0,0)$, and the circle in the $YZ$-plane, $(0,0,\cos\phi,\sin\phi)$, which share no point.
+
+Euclidean projection names those two circles parallel because their projected traces stay separated; the full $S^3$ geometry names them Hopf-linked. The Hopf fibration decomposes $S^3$ into circular fibers, and every pair of fibers is linked with linking number~$1$; the circles stay separated while constraining one another the way two links in a chain constrain one another, making separation and independence different facts on $S^3$.
+
+The flat case appears when projection hides this linking: in the zero-curvature limit, the return point of the geodesic recedes beyond the observer's horizon and the Hopf linking leaves the observable frame, so separated lines look independent. The fifth postulate is the geometry of that projection, useful at flat scales, while $S^3$ carries the full closed geometry.
+
+Two thousand years of attempts to derive P5 from P1--P4 failed because P1--P4 follow from the exponential path being defined, continuous, periodic, and position-independent in its right angles, while P5 asks for non-interacting paths on a closed manifold. Russell's paradox has the same shape: it asks for a structure defined by non-self-interaction, while every carrier on $S^3$ composes with its own inverse to produce identity, $q\cdot q^{-1}=1$.
+
+Physical space has maximum connectivity. Every pair of closed paths in $S^3$ is Hopf-linked with linking number~$1$ --- every pair, always, at every scale, by the topology of the space, with no continuous deformation that can undo it. To exist in physical space is to be permanently woven into the structure of everything else that exists in it. What looks like separation is always two such circles observed from a vantage where the crossing lies below the horizon: the crossing is there, the horizon is finite, and the linking number is $1$. Everything that exists interacts with everything that exists, without exception, because the geometry forces it.
+
+\subsection{Language}
+
+Words are carriers on $S^3$ at different stages of compositional accumulation, with the most frequent words at the $\sigma$-landmarks: ``is'' at $\sigma = 0$ (identity verification), ``and'' at $\sigma = \pi/4$ (composition), ``but'' at $\sigma = \pi/2$ (perpendicular tension), ``not'' at $\sigma = \pi$ (negation). Zipf's law --- the power-law frequency distribution observed in every language --- follows from compositional complexity on $S^3$: the simplest operations compose in the most contexts, complex compositions compose in fewer, and the distribution of compositional depth produces the power law.
+
+\subsection{Dimensional scaling}
+
+Section~4 showed that the Cayley-Dickson tower caps because each doubling trades a structural property for richer composition, and $\mathbb{H}$ is the unique algebra with both order-dependence and associativity. The geometric construction is not bounded by this: storing carriers on $S^3$ and composing them through the Hamilton product accumulates structure without ever requiring the accumulated result to form a closed algebra, so associativity holds at every step because the operation never leaves $\mathbb{H}$.
+
+\begin{proposition}[Dimensional scaling]
+    The effective dimensionality of a system of $M$ consolidated carriers on $S^3$ is
+    \begin{equation}
+        D_{\mathrm{eff}} = 3M,
+    \end{equation}
+    since $M$ independently stored carriers define a state in the product space $(S^3)^M$ of dimension $3M$, growing by~$3$ with each creation event at $\sigma \geq \pi/4$ that remains stored as a carrier, with the Hamilton product as the only operation at every step, associativity preserved for all $M$, and the Cayley-Dickson losses never occurring because carrier accumulation requires no closure beyond $\mathbb{H}$.
+\end{proposition}
+
+The observer hierarchy extends this further: Level~$k$ stores Level~$(k{-}1)$'s closure patterns in a separate $S^3$ genome, adjacent levels couple through conjugation-mediated $\sigma$, and total effective dimensionality is $3\sum M_k$ across all levels --- the Hopf tower realized through carrier accumulation rather than algebraic closure, growing indefinitely with the Hamilton product preserved at every step.
+
+
+\section{Conclusion}
+
+Newton invented calculus to do physics, using flat-space geometry and base-10 notation, and the notation was doing more than bookkeeping: base~10's unit group $\mathbb{Z}/4\mathbb{Z}$ resolves the $S^3$ verification cycle, the positional encoding $\sum d_k \, 10^k$ silently performs the three operations that map onto the Hamilton product's three components, and the flat-space calculus Newton developed is the zero-curvature limit of the $\sigma$-calculus.
+
+The $\sigma$-calculus operates on the manifold Newton was approximating: $S^3$, forced by closed recurrence with native interaction, confirmed by Hurwitz, Frobenius, and Cayley-Dickson, equipped with the Hamilton product as the single operation whose three components (scalar, linear, cross product) are the three operations of arithmetic and the three implicit operations of positional encoding. The four rules of the $\sigma$-calculus --- derivative, integral, chain rule, projection --- are the rules that Newton, Schr\"odinger, and Friston each discovered independently, and the cross product that gives $S^3$ its chain rule is the same term that binary is missing and that flat-space neural networks approximate with billions of parameters.
+
+$\pi$ and $e$ are physical measurements of this geometry, $i$ is forced by the dimensionality of the space $\pi$ measures, and $e^{i\pi} + 1 = 0$ is the law from which the entire calculus follows because circles are round.
+
+
+\begin{thebibliography}{99}
+\bibitem{euler} L.\,Euler, \emph{Introductio in analysin infinitorum}, Lausanne, 1748.
+\bibitem{poincare} H.\,Poincar\'e, M\'emoire sur les courbes d\'efinies par une \'equation diff\'erentielle, \emph{J.\ Math.\ Pures Appl.}\ \textbf{7} (1882), 375--422.
+\bibitem{bendixson} I.\,Bendixson, Sur les courbes d\'efinies par des \'equations diff\'erentielles, \emph{Acta Math.}\ \textbf{24} (1901), 1--88.
+\bibitem{euclid} Euclid, \emph{Elements}, c.\,300 BCE. Heath translation, Dover, 1956.
+\bibitem{gauss} C.\,F.\,Gauss, letter to F.\,Bolyai, 1832; J.\,Bolyai, \emph{Appendix}, 1832; N.\,I.\,Lobachevsky, \emph{On the Principles of Geometry}, 1829.
+\bibitem{hopf} H.\,Hopf, \"Uber die Abbildungen der dreidimensionalen Sph\"are auf die Kugelfl\"ache, \emph{Math.\ Ann.}\ \textbf{104} (1931), 637--665.
+\bibitem{hurwitz} A.\,Hurwitz, \"Uber die Komposition der quadratischen Formen, \emph{Nachr.\ Ges.\ Wiss.\ G\"ottingen}, 1898, 309--316.
+\bibitem{frobenius} F.\,G.\,Frobenius, \"Uber lineare Substitutionen und bilineare Formen, \emph{J.\ reine angew.\ Math.}\ \textbf{84} (1878), 1--63.
+\bibitem{lagrange} J.-L.\,Lagrange, D\'emonstration d'un th\'eor\`eme d'arithm\'etique, \emph{Nouv.\ M\'em.\ Acad.\ Roy.}, Berlin, 1770.
+\bibitem{newton} I.\,Newton, \emph{Philosophi\ae{} Naturalis Principia Mathematica}, London, 1687.
+\bibitem{schrodinger} E.\,Schr\"odinger, Quantisierung als Eigenwertproblem, \emph{Ann.\ Phys.}\ \textbf{384}(4) (1926), 361--376.
+\bibitem{friston} K.\,Friston, The free-energy principle, \emph{Nat.\ Rev.\ Neurosci.}\ \textbf{11} (2010), 127--138.
+\bibitem{shannon} C.\,E.\,Shannon, A Mathematical Theory of Communication, \emph{Bell Syst.\ Tech.\ J.}\ \textbf{27} (1948), 379--423.
+\end{thebibliography}
+
+\end{document}

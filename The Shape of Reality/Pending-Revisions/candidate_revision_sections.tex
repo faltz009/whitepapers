@@ -1,0 +1,302 @@
+% Candidate insertions generated during the May 22 discovery pass.
+% This file does not modify last.tex. It collects sections that are ready,
+% or close to ready, for later integration.
+
+\subsection{Curvature, knot cost, and the uniqueness of three dimensions}
+
+The same number appears from two independent sides of the geometry.  On the unit sphere \(S^n\), scalar curvature is fixed by dimension:
+\[
+R_{S^n}=n(n-1).
+\]
+On the Clifford torus, the adjacent torus knot \(T(n-1,n)\) has Chern-Simons invariant
+\[
+\mathrm{cs}(T(n-1,n))
+=
+\frac{((n-1)^2-1)(n^2-1)}{24n(n-1)}
+=
+\frac{(n-2)(n+1)}{24}.
+\]
+The inverse invariant \(1/\mathrm{cs}\) is the natural topological cost of maintaining that knot.  Requiring the simplest stable topology in dimension \(n\) to be calibrated against the ambient curvature gives
+\[
+\frac{1}{\mathrm{cs}(T(n-1,n))}=R_{S^n},
+\]
+so
+\[
+\frac{24}{(n-2)(n+1)}=n(n-1),
+\]
+and therefore
+\[
+n(n-1)(n-2)(n+1)=24.
+\]
+For integer \(n>2\), the left side is strictly increasing.  At \(n=3\) it is
+\[
+3\cdot2\cdot1\cdot4=24,
+\]
+while the next case already gives
+\[
+4\cdot3\cdot2\cdot5=120.
+\]
+Thus \(n=3\) is the unique dimension where intrinsic sphere curvature and the topological cost of the simplest adjacent torus knot use the same natural scale.
+
+This result does not rely on a fitted constant.  It uses the scalar curvature of the unit sphere and the standard Chern-Simons invariant of torus-knot complements.  Its physical reading is direct: in three spatial dimensions, matter as stable topology and gravity as curvature can share a common unit.  In other integer dimensions, the same calibration fails at the arithmetic level.
+
+\subsection{The finite phase sector of the trefoil}
+
+The trefoil complement has fundamental group
+\[
+\pi_1(S^3\setminus T(2,3))
+=
+\langle a,b\mid a^2=b^3\rangle.
+\]
+Taken as a raw knot group, its one-dimensional \(U(1)\) character space is continuous.  Abelianization gives the relation
+\[
+2a=3b,
+\]
+and since \(\gcd(2,3)=1\), the abelianization is \(\mathbb Z\).  The six-fold structure appears after imposing the finite closure sector
+\[
+a^2=b^3=1.
+\]
+Then \(a\) has two allowed phases and \(b\) has three:
+\[
+a\in\{\pm1\},
+\qquad
+b\in\{1,\omega,\omega^2\},
+\qquad
+\omega=e^{2\pi i/3}.
+\]
+This gives a finite phase set
+\[
+\mathbb Z_2\times\mathbb Z_3,
+\]
+with six characters.  The same \(2\times3\) structure appears in the proton prefactor
+\[
+\frac{1}{\mathrm{cs}(T(2,3))}=6.
+\]
+The safe statement is therefore precise: the trefoil group itself has a continuous \(U(1)\) character family, while the closed finite phase sector selected by the relations \(a^2=b^3=1\) has six characters, organized as \(2\times3\).
+
+\subsection{The trefoil as the unique integer torus-knot mass prefactor}
+
+For a torus knot \(T(p,q)\), with \(2\leq p<q\) and \(\gcd(p,q)=1\), the Kirk--Klassen invariant gives
+\[
+\mathrm{cs}(T(p,q))
+=
+\frac{(p^2-1)(q^2-1)}{24pq}.
+\]
+The inverse topological prefactor is therefore
+\[
+\frac{1}{\mathrm{cs}(T(p,q))}
+=
+\frac{24pq}{(p^2-1)(q^2-1)}.
+\]
+For fixed \(p\), this expression decreases as \(q\) increases, so its maximum occurs at the first admissible value \(q=p+1\).  At that value,
+\[
+\frac{24p(p+1)}{(p^2-1)((p+1)^2-1)}
+=
+\frac{24}{(p-1)(p+2)}.
+\]
+For \(p\geq5\), this maximum is at most
+\[
+\frac{24}{4\cdot7}=\frac67,
+\]
+which is already below \(1\).  No positive integer inverse prefactor can occur for \(p\geq5\).
+
+Only \(p=2,3,4\) remain.  For \(p=2\),
+\[
+\frac{1}{\mathrm{cs}(T(2,q))}
+=
+\frac{16q}{q^2-1}.
+\]
+Since \(\gcd(q,q^2-1)=1\), integrality forces
+\[
+q^2-1\mid16.
+\]
+With \(q>2\), the only admissible solution is \(q=3\), giving
+\[
+\frac{1}{\mathrm{cs}(T(2,3))}=6.
+\]
+For \(p=3\), the only cases with value at least \(1\) are \(q=4,5,7,8\), and they give
+\[
+\frac{12}{5},\quad
+\frac{15}{8},\quad
+\frac{21}{16},\quad
+\frac87,
+\]
+none of which is an integer.  For \(p=4\), only \(q=5\) remains, giving
+\[
+\frac43.
+\]
+Thus \(T(2,3)\) is the unique torus knot whose inverse Chern-Simons invariant is an integer.  The proton prefactor \(6\) is not merely the smallest example; it is the only integer mass prefactor available to torus-knot topology under this invariant.
+
+\subsection{The rational point of the \(S^4\) spectral zeta}
+
+For the conformal scalar on \(S^4\),
+\[
+\zeta_{\mathrm{conf}}(s)
+=
+\frac16\sum_{m=1}^{\infty}
+\frac{2m+1}{[m(m+1)]^{s-1}}.
+\]
+At \(s=3\),
+\[
+\frac{2m+1}{m^2(m+1)^2}
+=
+\frac{1}{m^2}-\frac{1}{(m+1)^2},
+\]
+so the sum telescopes:
+\[
+\zeta_{\mathrm{conf}}(3)=\frac16.
+\]
+This is the Chern-Simons invariant of the trefoil complement.
+
+The same spectral function also explains why this rational value is special.  Let \(n=s-1\), and write
+\[
+F_n(m)=\frac{2m+1}{m^n(m+1)^n}.
+\]
+The partial fractions have coefficients
+\[
+A_{n,j}
+=
+(-1)^{n-j}
+\frac{j-1}{2n-j-1}
+\binom{2n-j-1}{n-j},
+\qquad j=2,\ldots,n,
+\]
+whose absolute values form Catalan-triangle rows.  These coefficients pair the \(1/m^j\) and \(1/(m+1)^j\) terms so that every even zeta value cancels.  For \(n>2\), an odd zeta value always remains: when \(n\) is odd, the highest term \(\zeta(n)\) survives; when \(n\) is even, the highest odd term \(\zeta(n-1)\) survives with coefficient proportional to \(n-2\).
+
+Thus \(s=3\) is the unique integer evaluation where the spectral zeta is purely rational.  The proton sits at the rational closure point of the \(S^4\) spectrum, while higher evaluations generate the odd zeta values that appear in one-loop corrections.
+
+\subsection{The fine-structure running scale}
+
+The bare coupling is
+\[
+\alpha_{\mathrm{bare}}^{-1}
+=
+\frac{9\pi^5}{e^3}.
+\]
+The observed low-energy coupling is obtained by the one-loop running term
+\[
+\alpha_{\mathrm{phys}}^{-1}
+=
+\frac{9\pi^5}{e^3}
+-
+\frac{1}{3\pi}\log\frac94.
+\]
+The scale ratio \(9/4\) follows from the same projection geometry.  At the bare coupling point, the \(W\)-coordinate is
+\[
+\cos\sigma_{\mathrm{bare}}=\frac23,
+\]
+the electromagnetic charge coordinate of the up quark.  If energy scales by inverse projected length, then
+\[
+\frac{Q}{\mu}
+=
+\sec\sigma_{\mathrm{bare}}
+=
+\frac32,
+\]
+and the one-loop formula uses
+\[
+\frac{Q^2}{\mu^2}
+=
+\sec^2\sigma_{\mathrm{bare}}
+=
+\frac94.
+\]
+This is the same number written in dimensional form:
+\[
+\frac94=\left(\frac{3}{2}\right)^2.
+\]
+The logarithmic correction is therefore the QED running from the \(W=2/3\) geometric scale to the electron scale.
+
+\subsection{The gravitational hierarchy and the \(61\alpha^2\) target}
+
+The Planck/electron mass hierarchy is controlled by the same trefoil and dimension factors:
+\[
+\ln\frac{m_{\mathrm{Pl}}}{m_e}
+\approx
+\frac{27\pi^5}{8e^3}
++
+\frac{\zeta(5)}{10}.
+\]
+The first term is
+\[
+\frac{27\pi^5}{8e^3}
+=
+\frac38\frac{9\pi^5}{e^3},
+\]
+where
+\[
+\frac38
+=
+\mathrm{cs}(T(2,3))\left(\frac32\right)^2
+=
+\frac16\cdot\frac94.
+\]
+The zeta term is three copies of the proton correction,
+\[
+\frac{\zeta(5)}{10}=3\cdot\frac{\zeta(5)}{30}.
+\]
+Numerically,
+\[
+\frac{27\pi^5}{8e^3}+\frac{\zeta(5)}{10}
+=
+51.52459529358\ldots,
+\]
+while the value from current constants is
+\[
+\ln\frac{m_{\mathrm{Pl}}}{m_e}
+=
+51.52783983692\ldots.
+\]
+The residual is
+\[
+0.0032445433385\ldots
+=
+60.9288414861\ldots\,\alpha^2.
+\]
+The next correction target is therefore
+\[
+61\alpha^2.
+\]
+Adding it leaves a logarithmic residual of about \(3.8\times10^{-6}\), corresponding to a few parts per million in \(G\).  The integer \(61\) is not yet derived; the useful result at this stage is that the remaining correction has been reduced to a specific second-order electromagnetic scale.
+
+\subsection{Heavy-sector multiplicative correction}
+
+The additive zeta correction works across the low and intermediate spectrum, but the \(\pi^7\) electroweak family leaves a coherent residual.  For the heavy sector, the correction is better modeled as a fractional one-loop shift:
+\[
+\frac{\delta m}{m_{\mathrm{bare}}}
+=
+\kappa\frac{\alpha}{2\pi},
+\qquad
+m_{\mathrm{pred}}
+=
+m_{\mathrm{bare}}\left(1+\kappa\frac{\alpha}{2\pi}\right).
+\]
+Using the current bare formulas gives
+\[
+\kappa^\star_t=0.652012858,
+\quad
+\kappa^\star_W=1.295012119,
+\quad
+\kappa^\star_Z=1.203927825,
+\quad
+\kappa^\star_H=1.624995931.
+\]
+The class structure suggested by these values is
+\[
+\kappa_t\sim\frac23,
+\qquad
+\kappa_W\sim\frac43,
+\qquad
+\kappa_H\sim\frac{13}{8}.
+\]
+For the \(Z\), the natural form includes weak mixing:
+\[
+\kappa_Z=\frac43-\lambda\sin^2\theta_W.
+\]
+With \(\sin^2\theta_W=0.223044624\), the extracted value is
+\[
+\lambda=0.58017766\ldots.
+\]
+The small-denominator candidate \(7/12\) is close, but no structural derivation of that denominator is currently known.
+
+With \(\kappa_H=13/8\) and the extracted \(Z\)-mixing coefficient, the full-spectrum geometric mean absolute error is \(0.000013850\%\), and the worst residual is \(0.004443979\%\), carried by the W.  Using small rational values such as \(\lambda=7/12\), \(11/19\), or \(18/31\) for the \(Z\)-mixing coefficient keeps the worst residual the same and leaves the geometric mean in the \(3.6\)--\(4.1\times10^{-5}\%\) range.  The regime switch is strong enough to keep as a discovered correction layer, while the exact origin of the \(\kappa\) values remains a derivation target.

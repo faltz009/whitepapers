@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Trefoil Attractor: From Knot to Cosmos</title>
+<style>
+* { margin:0; padding:0; }
+body { background:#000; overflow:hidden; font-family:'Courier New',monospace; }
+canvas { display:block; }
+.bar { position:fixed; left:50%; transform:translateX(-50%); display:flex; gap:0; z-index:10; }
+#ui { bottom:28px; gap:16px; align-items:center; flex-wrap:wrap; justify-content:center; }
+.btn {
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.6); padding:10px 24px; font-family:'Courier New',monospace;
+  font-size:12px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all 0.3s;
+}
+.btn:hover { background:rgba(255,255,255,0.1); color:#fff; }
+.btn.active { background:rgba(255,255,255,0.15); color:#fff; border-color:rgba(255,255,255,0.5); }
+#info {
+  position:fixed; top:0; right:0; width:340px; height:100vh; z-index:10;
+  background:rgba(0,0,0,0.85); border-left:1px solid rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.65); font-size:12px; line-height:1.7;
+  padding:20px 24px 80px 24px; overflow-y:auto; transition:all 0.4s;
+  box-sizing:border-box;
+}
+#info.collapsed { transform:translateX(100%); opacity:0; pointer-events:none; }
+#info strong { color:rgba(255,255,255,0.9); font-size:13px; letter-spacing:1px; }
+#info em { color:rgba(140,200,255,0.85); font-style:normal; }
+#info .dim { color:rgba(255,255,255,0.35); font-size:11px; }
+#info p { margin:0 0 10px 0; }
+#infoToggle {
+  position:absolute; top:12px; right:14px; cursor:pointer;
+  color:rgba(255,255,255,0.3); font-size:18px; line-height:1;
+}
+#infoToggle:hover { color:rgba(255,255,255,0.7); }
+#infoOpen {
+  position:fixed; top:20px; right:20px; z-index:9;
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.4); width:32px; height:32px; display:none;
+  align-items:center; justify-content:center; cursor:pointer; font-size:16px; border-radius:4px;
+}
+#infoOpen:hover { color:#fff; background:rgba(255,255,255,0.1); }
+#info::-webkit-scrollbar { width:4px; }
+#info::-webkit-scrollbar-track { background:transparent; }
+#info::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:2px; }
+#info hr { border:none; border-top:1px solid rgba(255,255,255,0.08); margin:12px 0; }
+</style>
+</head>
+<body>
+<div id="info">
+  <div id="infoToggle" onclick="toggleInfo()">&times;</div>
+  <div id="infoContent"></div>
+</div>
+<div id="infoOpen" onclick="toggleInfo()">?</div>
+<div id="ui" class="bar" style="bottom:28px; gap:16px;">
+  <button class="btn active" id="btn0" onclick="setMode(0)">S&sup1; Orbit</button>
+  <button class="btn" id="btn1" onclick="setMode(1)">S&sup1;&times;S&sup1; Torus</button>
+  <button class="btn" id="btn2" onclick="setMode(2)">S&sup2; Ergodic</button>
+  <button class="btn" id="btn3" onclick="setMode(3)">S&sup3; Hopf</button>
+  <button class="btn" onclick="resetSim()">Reset</button>
+  <div style="display:flex;align-items:center;gap:10px;margin-left:8px;">
+    <span style="color:rgba(255,255,255,0.4);font-size:11px;letter-spacing:2px;">SPEED</span>
+    <input id="speedSlider" type="range" min="1" max="500" value="50" style="
+      width:130px;accent-color:#66bbff;cursor:pointer;
+      -webkit-appearance:none;appearance:none;height:4px;background:rgba(255,255,255,0.15);
+      border-radius:2px;outline:none;
+    "/>
+  </div>
+  <label id="triWrap" style="display:flex;align-items:center;gap:6px;margin-left:8px;cursor:pointer;">
+    <input id="triToggle" type="checkbox" style="accent-color:#66bbff;cursor:pointer;"/>
+    <span style="color:rgba(255,255,255,0.4);font-size:11px;letter-spacing:2px;">TRIANGLE</span>
+  </label>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ============ SETUP ============
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 200);
+camera.position.set(0, 4, 14);
+camera.lookAt(0,0,0);
+var renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+document.body.appendChild(renderer.domElement);
+window.addEventListener('resize', function() {
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+// ============ TREFOIL KNOT ============
+// Classic trefoil: the simplest non-trivial knot, 3 symmetric lobes.
+// Tilt around X controls the swept shape under Y-rotation:
+// tilt=0 gives a pinched double-bulge, tilt=pi/2 gives a torus.
+function trefoil(t) {
+  var x = Math.sin(t) + 2*Math.sin(2*t);
+  var y = Math.cos(t) - 2*Math.cos(2*t);
+  var z = -Math.sin(3*t);
+  return new THREE.Vector3(x*1.3, y*1.3, z*1.8);
+}
+
+// ============ FRENET FRAME ============
+// Compute tangent T, normal N, binormal B at parameter t via central differences.
+// The Frenet frame is the natural coordinate system riding along the curve:
+//   T = γ'/|γ'|  (tangent — direction of motion)
+//   N = T'/|T'|  (normal — direction of curvature)
+//   B = T × N    (binormal — completes right-handed frame)
+//
+// Three particles are placed at:
+//   γ(t) + r·(cos(2πk/3)·N + sin(2πk/3)·B)   for k = 0,1,2
+//
+// This gives an equilateral triangle of FIXED radius r in the normal plane,
+// riding along the curve. As t advances, the Frenet frame rotates due to
+// curvature (frame turns toward center of curvature) and torsion (frame
+// twists around the tangent). After one full loop, the triangle returns
+// rotated by the curve's holonomy = ∮τ ds — this is geometric/Berry phase.
+var TRIANGLE_RADIUS = 1.2;
+var dt = 0.001;
+
+function frenetFrame(t) {
+  // Central differences for γ'(t) and γ''(t)
+  var p0 = trefoil(t - dt);
+  var p1 = trefoil(t);
+  var p2 = trefoil(t + dt);
+  // γ'(t) ≈ (p2 - p0) / 2dt
+  var tang = new THREE.Vector3().subVectors(p2, p0).divideScalar(2*dt);
+  var tangLen = tang.length();
+  tang.divideScalar(tangLen); // unit tangent T
+  // γ''(t) ≈ (p2 - 2p1 + p0) / dt²
+  var accel = new THREE.Vector3().addVectors(p2, p0).addScaledVector(p1, -2).divideScalar(dt*dt);
+  // N direction: component of accel perpendicular to T
+  // accel = (accel·T)T + κ|γ'|²N, so N ∝ accel - (accel·T)T
+  var aDotT = accel.dot(tang);
+  var norm = new THREE.Vector3().copy(accel).addScaledVector(tang, -aDotT);
+  var normLen = norm.length();
+  if (normLen > 0.0001) norm.divideScalar(normLen); // unit normal N
+  // B = T × N (unit binormal)
+  var binorm = new THREE.Vector3().crossVectors(tang, norm);
+  return { pos: p1, T: tang, N: norm, B: binorm };
+}
+
+// Get the 3 triangle vertex positions at parameter t
+function getTriangleVertices(t) {
+  var f = frenetFrame(t);
+  var verts = [];
+  for (var k = 0; k < 3; k++) {
+    var angle = 2 * Math.PI * k / 3;
+    var ca = Math.cos(angle), sa = Math.sin(angle);
+    // vertex = γ(t) + r·(cos·N + sin·B)
+    var v = new THREE.Vector3().copy(f.pos)
+      .addScaledVector(f.N, TRIANGLE_RADIUS * ca)
+      .addScaledVector(f.B, TRIANGLE_RADIUS * sa);
+    verts.push(v);
+  }
+  return verts;
+}
+
+// ============ S³ MATH ============
+//
+// EMBEDDING: Trefoil as (2,3) torus knot on the Clifford torus in S³.
+//
+// S³ = {(a,b,c,d) ∈ ℝ⁴ : a² + b² + c² + d² = 1}
+// Equivalently, S³ = {(z₁,z₂) ∈ ℂ² : |z₁|² + |z₂|² = 1}
+//
+// The Clifford torus is the locus |z₁| = |z₂| = 1/√2 in S³.
+// A (p,q) torus knot on it: z₁ = (1/√2)·e^(ipt), z₂ = (1/√2)·e^(iqt)
+// For trefoil: p=2, q=3 → wraps 2× around one S¹, 3× around the other.
+//
+// Expanding to ℝ⁴: [Re(z₁), Im(z₁), Re(z₂), Im(z₂)]
+//   = [sin(α)cos(2t), sin(α)sin(2t), cos(α)cos(3t), cos(α)sin(3t)]
+// with α = π/4 so sin(α) = cos(α) = 1/√2.
+//
+// Verification: |p|² = sin²α(cos²2t + sin²2t) + cos²α(cos²3t + sin²3t)
+//             = sin²α + cos²α = 1. ✓ On S³.
+//
+var S3_ALPHA = Math.PI / 4; // α = π/4 → Clifford torus |z₁| = |z₂| = 1/√2
+function trefoilS3(t) {
+  var sa = Math.sin(S3_ALPHA), ca = Math.cos(S3_ALPHA);
+  // Returns 4-vector [Re(z₁), Im(z₁), Re(z₂), Im(z₂)] = unit quaternion
+  return [sa*Math.cos(2*t), sa*Math.sin(2*t), ca*Math.cos(3*t), ca*Math.sin(3*t)];
+}
+
+// QUATERNION MULTIPLICATION
+// Quaternions: q = a + bi + cj + dk, stored as [a, b, c, d]
+// Multiplication rules: i² = j² = k² = ijk = -1
+//   ij = k,  jk = i,  ki = j
+//   ji = -k, kj = -i, ik = -j
+//
+// Product (p)(q):
+//   real: p₀q₀ - p₁q₁ - p₂q₂ - p₃q₃
+//   i:    p₀q₁ + p₁q₀ + p₂q₃ - p₃q₂   (from jk=i, kj=-i)
+//   j:    p₀q₂ - p₁q₃ + p₂q₀ + p₃q₁   (from ki=j, ik=-j)
+//   k:    p₀q₃ + p₁q₂ - p₂q₁ + p₃q₀   (from ij=k, ji=-k)
+function qmul(p, q) {
+  return [
+    p[0]*q[0] - p[1]*q[1] - p[2]*q[2] - p[3]*q[3],
+    p[0]*q[1] + p[1]*q[0] + p[2]*q[3] - p[3]*q[2],
+    p[0]*q[2] - p[1]*q[3] + p[2]*q[0] + p[3]*q[1],
+    p[0]*q[3] + p[1]*q[2] - p[2]*q[1] + p[3]*q[0]
+  ];
+}
+
+// Stereographic projection S³ → ℝ³ from north pole N = (0,0,0,1)
+// Formula: π(a,b,c,d) = (a,b,c) / (1 - d)
+// When d → 1 (near pole), denominator → 0 and points project to infinity.
+// This IS the geometry of S³ — it's non-compact under projection.
+//
+// Smooth compression prevents the hard singularity (which caused straight lines)
+// while preserving the large-radius excursions that make S³ look like a volume.
+// soft=0.03 barely affects points away from the pole but tames the singularity.
+function stereoProj(q) {
+  var denom = 1.0 - q[3];
+  var soft = 0.03;
+  var denomEff = denom + soft / (denom + soft); // smooth near pole only
+  var s = 4.0 / denomEff;
+  return new THREE.Vector3(q[0]*s, q[1]*s, q[2]*s);
+}
+
+// S³ ROTATION — Quaternion Euler decomposition
+//
+// Any element g ∈ SU(2) ≅ S³ can be written as:
+//   g = e^(α·i) · e^(β·j) · e^(γ·k)
+// because {i, j, k} spans su(2), making the map φ: T³ → SU(2) surjective.
+// (Proof: dφ at identity has full rank 3 = dim SU(2), so φ is a submersion.
+//  Image contains open neighborhood of identity; SU(2) connected → surjective.)
+//
+// Flow: (θ₁, θ₂, θ₃) = t·(1, e, √2). Since {1, e, √2} are rationally
+// independent (e transcendental, √2 algebraic irrational), the flow is
+// dense in T³. Surjectivity of φ → orbit dense in SU(2) = S³.
+//
+// Note: TWO factors don't suffice. e^(αi)·e^(βj) parametrizes a 2D
+// surface in S³ (arg(z₁) = arg(z₂)), not the full 3-sphere.
+var s3angle1 = 0, s3angle2 = 0, s3angle3 = 0;
+
+var INFO_HEADER =
+  '<strong>The Trefoil Attractor</strong><br>' +
+  '<span class="dim">From Knot to Cosmos</span>' +
+  '<p>Three particles trace a <em>trefoil knot</em> &mdash; the simplest knot, requiring a cut to untie. It is a (2,3) torus knot: it winds 2 times around one axis and 3 times around the other. The numbers 2 and 3 are the first two primes.</p>' +
+  '<p>This is the minimal topologically protected structure &mdash; the simplest pattern that <em>persists under all continuous deformations</em>. A proton is exactly this: three quarks locked in a triangular configuration by the strong force, occupying the homotopy class &pi;<sub>5</sub>(SU(3))&nbsp;=&nbsp;&Zopf;. The trefoil is the geometric shape of confinement.</p>' +
+  '<p>Each mode below adds one oscillator degree of freedom, unfolding dimensions the way increasing the energy of a probe reveals deeper structure inside a proton. These are <em>one object (S&sup3;) seen at four resolutions</em>.</p><hr style="border-color:rgba(255,255,255,0.1);margin:12px 0;">';
+
+var INFO_MODE = [
+  // S1
+  INFO_HEADER +
+  '<strong>S&sup1; Orbit &mdash; The Skeleton</strong>' +
+  '<p>No rotation. The three particles trace a closed 1D loop on the trefoil knot &mdash; three points riding a single orbit, separated by &pi;/3 in parameter space.</p>' +
+  '<p><em>What you are seeing:</em> The minimal coherent structure. One oscillator, one closed path. This is a proton at the lowest resolution &mdash; the way a low-energy probe sees it: three discrete objects (quarks) on a confined trajectory. At this scale, the proton looks like three particles.</p>' +
+  '<p><em>Enable TRIANGLE</em> to see the equilateral triangle connecting the three particles. It breathes and rotates as it rides the curve, but remains nearly rigid &mdash; the C<sub>3</sub> symmetry of the trefoil preserves the triangular configuration, just as SU(3) color symmetry locks quarks into a color-neutral triad.</p>' +
+  '<p><em>The deep connection:</em> This is A&nbsp;?=&nbsp;A at its simplest &mdash; identity verification as a closed orbit. The pattern persists because the knot is topologically protected. Topological protection = existence.</p>',
+
+  // S1xS1
+  INFO_HEADER +
+  '<strong>S&sup1;&times;S&sup1; Torus &mdash; The Surface</strong>' +
+  '<p>One rotation axis added. The trefoil now spins around the Y-axis while the particles continue orbiting along it, sweeping a donut shape (torus). A torus is the product of two circles: the orbit loop and the rotation loop.</p>' +
+  '<p><em>What you are seeing:</em> Two oscillations working together &mdash; the orbit and the spin &mdash; at frequencies that form a simple ratio. Because the ratio is simple (like musical notes in harmony), the trails close up: every path eventually returns exactly to its start. The result is a clean, closed surface.</p>' +
+  '<p><em>Why it matters:</em> When two oscillations are in a simple frequency ratio (like 2:1 or 3:2), they reinforce each other and produce stable structure. This is the regime of bound states &mdash; atoms, crystals, standing waves. Harmony between oscillators produces <em>structure</em>.</p>' +
+  '<p><em>The tilt (&pi;/2)</em> is the alignment condition: the knot must be rotated so that its internal vibration pattern separates cleanly from the spin axis. A wrong angle produces a pinched, degenerate surface. The oscillators must be in the right relationship for coherent structure to emerge.</p>',
+
+  // S2
+  INFO_HEADER +
+  '<strong>S&sup2; Ergodic &mdash; The Sphere</strong>' +
+  '<p>Two rotation axes, now at a frequency ratio of <em>e</em> &asymp; 2.718 &mdash; an irrational number. Because the ratio is irrational (like two musical notes that never harmonize), the rotations never repeat the same combination. The trajectories fill the entire surface of a sphere.</p>' +
+  '<p><em>What you are seeing:</em> The clean torus has dissolved. With an irrational frequency ratio, every trail explores fresh territory indefinitely. Given enough time, the trajectory visits every point on the sphere. This is called <em>ergodic</em> behavior: the system eventually covers all accessible states.</p>' +
+  '<p><em>The critical transition:</em> The manifold dimension stayed the same &mdash; only the <em>relationship between oscillators</em> changed, from a simple ratio to an irrational one. The topology jumped from torus to sphere. This is the transition from coherence to exploration, from harmony to search.</p>' +
+  '<p><em>In a proton:</em> This corresponds to intermediate-energy probes (Bjorken x &asymp; 0.01). The three-quark skeleton gives way to a &ldquo;sea&rdquo; of virtual gluons and quark pairs filling a shell. The observer&rsquo;s resolution crossed a threshold: one more degree of freedom became visible, and the discrete picture dissolved into a continuous surface.</p>',
+
+  // S3
+  INFO_HEADER +
+  '<strong>S&sup3; Hopf &mdash; The Volume</strong>' +
+  '<p>The trefoil is re-embedded in a higher-dimensional sphere (S&sup3;, the 3-sphere) as a (2,3) torus knot on the Clifford torus. Three independent rotations at irrational rates (1, <em>e</em>, &radic;2) generate trajectories that fill the entire 3-sphere. Stereographic projection maps this 4D flow into the visible 3D space.</p>' +
+  '<p><em>What you are seeing:</em> The full structure. Trajectories now fill a volume. The scattered, explosive appearance IS correct S&sup3; geometry: stereographic projection maps the compact 3-sphere onto all of 3D space, with points near the projection pole flying out to large radii. Density falls as 1/r<sup>4</sup>.</p>' +
+  '<p><em>The leap to S&sup3;:</em> Ordinary 3D rotations can only fill a sphere surface. Filling a 3-sphere requires a fundamentally richer rotation system: quaternions (SU(2)) instead of ordinary rotations (SO(3)). SU(2) is the &ldquo;double cover&rdquo; of SO(3) &mdash; it encodes twice as much rotational information. This is the mathematical structure underlying quantum mechanics: every quantum spin-&frac12; particle lives in SU(2), projected down to the classical SO(3) we observe.</p>' +
+  '<p><em>The hydrogen connection:</em> Fock (1935) showed that hydrogen&rsquo;s bound states in momentum space, after stereographic projection, become harmonics on S&sup3;. The SO(4) symmetry of the hydrogen atom (SU(2)&times;SU(2)/&Zopf;<sub>2</sub>) is the isometry group of S&sup3;. Our trefoil lives in this same space, moved by the same group.</p>' +
+  '<p><em>In a proton:</em> This is the highest-energy regime (Bjorken x &asymp; 0.0001) &mdash; the Color Glass Condensate, where gluon density saturates and all hadrons look alike regardless of their valence content. The proton at full resolution is S&sup3;.</p>'
+];
+
+var COLORS = [
+  new THREE.Color(0.5, 0.85, 1.0),
+  new THREE.Color(1.0, 0.4, 0.2),
+  new THREE.Color(0.3, 1.0, 0.55)
+];
+
+// ============ TRAIL SYSTEM ============
+var MAX_T = 120000;
+var tP = new Float32Array(MAX_T*3);
+var tC = new Float32Array(MAX_T*4);
+var tS = new Float32Array(MAX_T);
+var tBirth = new Float32Array(MAX_T);
+var tLife = new Float32Array(MAX_T);
+var tG = new THREE.BufferGeometry();
+tG.setAttribute('position', new THREE.BufferAttribute(tP, 3));
+tG.setAttribute('color', new THREE.BufferAttribute(tC, 4));
+tG.setAttribute('size', new THREE.BufferAttribute(tS, 1));
+var tMat = new THREE.ShaderMaterial({
+  vertexShader: [
+    'attribute float size;',
+    'attribute vec4 color;',
+    'varying vec4 vC;',
+    'void main() {',
+    '  vC = color;',
+    '  vec4 mv = modelViewMatrix * vec4(position, 1.0);',
+    '  gl_PointSize = size * (300.0 / -mv.z);',
+    '  gl_Position = projectionMatrix * mv;',
+    '}'
+  ].join('\n'),
+  fragmentShader: [
+    'varying vec4 vC;',
+    'void main() {',
+    '  float d = length(gl_PointCoord - 0.5) * 2.0;',
+    '  float a = vC.a * smoothstep(1.0, 0.15, d);',
+    '  gl_FragColor = vec4(vC.rgb, a);',
+    '}'
+  ].join('\n'),
+  transparent: true, blending: THREE.AdditiveBlending, depthWrite: false
+});
+var tCloud = new THREE.Points(tG, tMat);
+scene.add(tCloud);
+var tIdx = 0, tCount = 0;
+
+// ============ PARTICLE HEADS + GLOWS ============
+var hGeo = new THREE.SphereGeometry(0.13, 16, 16);
+var heads = [], glowSprites = [];
+var gc = document.createElement('canvas');
+gc.width = 128; gc.height = 128;
+var gctx = gc.getContext('2d');
+var grad = gctx.createRadialGradient(64,64,0,64,64,64);
+grad.addColorStop(0,'rgba(255,255,255,0.8)');
+grad.addColorStop(0.1,'rgba(255,255,255,0.4)');
+grad.addColorStop(0.25,'rgba(255,255,255,0.08)');
+grad.addColorStop(1,'rgba(255,255,255,0)');
+gctx.fillStyle = grad;
+gctx.fillRect(0,0,128,128);
+var glowTex = new THREE.CanvasTexture(gc);
+for (var i = 0; i < 3; i++) {
+  var h = new THREE.Mesh(hGeo, new THREE.MeshBasicMaterial({color:COLORS[i].clone().multiplyScalar(2)}));
+  scene.add(h); heads.push(h);
+  var sp = new THREE.Sprite(new THREE.SpriteMaterial({
+    map:glowTex, color:COLORS[i], blending:THREE.AdditiveBlending, transparent:true, opacity:0.6
+  }));
+  sp.scale.set(1.2,1.2,1); scene.add(sp); glowSprites.push(sp);
+}
+
+// Triangle connecting the three particles (4 points: close the loop)
+var triGeo = new THREE.BufferGeometry();
+triGeo.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(12), 3)); // 4 verts × 3
+var triLine = new THREE.Line(triGeo, new THREE.LineBasicMaterial({
+  color: 0xffffff, transparent: true, opacity: 0.5
+}));
+triLine.visible = false;
+scene.add(triLine);
+
+// ============ WIREFRAME ============
+var knotLine;
+function buildWireframe() {
+  if (knotLine) scene.remove(knotLine);
+  var pts = [];
+  for (var i = 0; i <= 400; i++) pts.push(trefoil(i/400*Math.PI*2));
+  knotLine = new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints(pts),
+    new THREE.LineBasicMaterial({color:0xffffff, transparent:true, opacity:0.15})
+  );
+  scene.add(knotLine);
+}
+buildWireframe();
+
+// ============ STATE ============
+var mode = 0;
+var spinSpd = 0, targetSpin = 0;
+var angleY = 0, angleX = 0, angleZ = 0;
+var knotQuat = new THREE.Quaternion();
+var frame = 0;
+var camTheta = 0, camPhi = 0.3, camDist = 14;
+var dragging = false, lastMouse = {x:0, y:0};
+
+renderer.domElement.addEventListener('mousedown', function(e) { dragging=true; lastMouse={x:e.clientX,y:e.clientY}; });
+renderer.domElement.addEventListener('mousemove', function(e) {
+  if (!dragging) return;
+  camTheta -= (e.clientX-lastMouse.x)*0.005;
+  camPhi = Math.max(-1.55, Math.min(1.55, camPhi+(e.clientY-lastMouse.y)*0.005));
+  lastMouse = {x:e.clientX, y:e.clientY};
+});
+renderer.domElement.addEventListener('mouseup', function() { dragging=false; });
+renderer.domElement.addEventListener('wheel', function(e) { camDist=Math.max(5,Math.min(35,camDist+e.deltaY*0.015)); });
+
+// ============ CONTROLS ============
+window.setMode = function(m) {
+  mode = m;
+  // Reset dynamic rotation angles on mode switch to prevent carryover
+  angleY=0; angleX=0; angleZ=0; s3angle1=0; s3angle2=0; s3angle3=0;
+  knotQuat.identity();
+  document.getElementById('btn0').classList.toggle('active', m===0);
+  document.getElementById('btn1').classList.toggle('active', m===1);
+  document.getElementById('btn2').classList.toggle('active', m===2);
+  document.getElementById('btn3').classList.toggle('active', m===3);
+  document.getElementById('infoContent').innerHTML = INFO_MODE[m];
+  var triWrap = document.getElementById('triWrap');
+  if (triWrap) triWrap.style.display = m === 0 ? 'flex' : 'none';
+  if (m !== 0) { document.getElementById('triToggle').checked = false; triLine.visible = false; }
+};
+
+window.resetSim = function() {
+  tIdx = 0; tCount = 0;
+  for (var i = 0; i < MAX_T*4; i++) tC[i] = 0;
+  for (var i = 0; i < MAX_T; i++) { tBirth[i]=0; tLife[i]=0; }
+  angleY=0; angleX=0; angleZ=0; s3angle1=0; s3angle2=0; s3angle3=0; spinSpd=0; frame=0;
+  knotQuat.identity();
+};
+
+var infoVisible = true;
+window.toggleInfo = function() {
+  infoVisible = !infoVisible;
+  document.getElementById('info').classList.toggle('collapsed', !infoVisible);
+  document.getElementById('infoOpen').style.display = infoVisible ? 'none' : 'flex';
+};
+
+// Init info
+document.getElementById('infoContent').innerHTML = INFO_MODE[0];
+
+// ============ EMIT ============
+function emit(pos, ci, alpha, sz, life) {
+  var i = tIdx % MAX_T;
+  tP[i*3]=pos.x; tP[i*3+1]=pos.y; tP[i*3+2]=pos.z;
+  tC[i*4]=COLORS[ci].r; tC[i*4+1]=COLORS[ci].g; tC[i*4+2]=COLORS[ci].b; tC[i*4+3]=alpha;
+  tS[i]=sz; tBirth[i]=frame; tLife[i]=life;
+  tIdx++; tCount=Math.min(tIdx, MAX_T);
+}
+
+// ============ ANIMATE ============
+function animate() {
+  requestAnimationFrame(animate);
+  frame++;
+  var speedMult = document.getElementById('speedSlider').value / 50.0;
+
+  if (mode === 0) { targetSpin = 0; }
+  else { targetSpin = 0.08; }
+  spinSpd += (targetSpin - spinSpd) * 0.05;
+  if (Math.abs(spinSpd) < 0.0005 && targetSpin === 0) spinSpd = 0;
+
+  var trailLife = mode === 0 ? 600 : (mode === 1 ? 4000 : (mode === 2 ? 6000 : 12000));
+
+  // ROTATION LOGIC — each mode adds an oscillator degree of freedom:
+  //
+  // Mode 0 (S¹): No rotation. Particles trace 1D orbit.
+  // Mode 1 (S¹×S¹): Y-axis rotation. Pre-tilted π/2 so sin(3t) decouples → torus.
+  // Mode 2 (S²): Y + X·e rotation. Two incommensurate axes → ergodic on S².
+  //   Dense in SO(3)/SO(2) = S² because two non-parallel rotations with
+  //   irrational frequency ratio generate a dense subgroup of SO(3).
+  // Mode 3 (S³): Three SU(2) factors e^(θi)·e^(eθj)·e^(√2θk).
+  //   Trefoil re-embedded in S³, rotated by left-quaternion multiplication.
+  //   Three rationally independent rates → dense in SU(2) ≅ S³.
+  //   Projected to ℝ³ via stereographic projection.
+  //
+  angleY += spinSpd * speedMult;
+  if (mode === 2) {
+    angleX += spinSpd * 2.71828 * speedMult; // rate e relative to Y
+  }
+  if (mode === 3) {
+    s3angle1 += spinSpd * speedMult;          // rate 1
+    s3angle2 += spinSpd * 2.71828 * speedMult; // rate e (transcendental)
+    s3angle3 += spinSpd * 1.41421 * speedMult; // rate √2 (algebraic irrational)
+    // {1, e, √2} rationally independent: if a + be + c√2 = 0 for integers,
+    // then e = -(a+c√2)/b is algebraic, contradicting transcendence. So b=0,
+    // then a + c√2 = 0 forces a=c=0 since √2 is irrational.
+  }
+
+  // Modes 0-2: 3D rotation via Three.js quaternions
+  var qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0), angleY);
+  var qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0), angleX);
+  var qZ = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1), angleZ);
+  // Tilt: fixed at π/2 — decouples the sin(3t) harmonic from the Y rotation axis
+  // At this angle, both radius and height under Y-rotation depend only on harmonic 3,
+  // so the meridional profile closes → clean torus.
+  var qTilt = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0), Math.PI/2);
+  knotQuat.copy(qY).multiply(qX).multiply(qZ).multiply(qTilt);
+
+  // Mode 3: SU(2) rotation quaternions (Euler decomposition)
+  // e^(θi) = cos(θ) + sin(θ)·i, etc. These are unit quaternions.
+  var s3q1 = [Math.cos(s3angle1), Math.sin(s3angle1), 0, 0]; // e^(θ₁·i)
+  var s3q2 = [Math.cos(s3angle2), 0, Math.sin(s3angle2), 0]; // e^(θ₂·j)
+  var s3q3 = [Math.cos(s3angle3), 0, 0, Math.sin(s3angle3)]; // e^(θ₃·k)
+  // Applied as: g = q3 · q2 · q1 (left-multiplication on S³ points)
+
+  // Wireframe: visible in modes 0-2, hidden in mode 3 (shape morphs under projection)
+  knotLine.quaternion.copy(knotQuat);
+  var wTgt = mode === 0 ? 0.15 : (mode === 3 ? 0.0 : 0.04);
+  knotLine.material.opacity += (wTgt - knotLine.material.opacity) * 0.08;
+
+  var orbitT = frame * 0.015 * speedMult;
+  var baseEmit = mode === 0 ? 3 : (mode === 3 ? 12 : 6);
+  var emitCount = Math.max(baseEmit, Math.round(baseEmit * speedMult));
+  var pAlpha = mode === 3 ? 0.85 : 0.65;
+  var OFFSETS = [0, Math.PI/3, Math.PI*2/3];
+
+  function getPos(t) {
+    if (mode === 3) {
+      var p4 = trefoilS3(t);
+      var r = qmul(s3q3, qmul(s3q2, qmul(s3q1, p4)));
+      return stereoProj(r);
+    } else {
+      return trefoil(t).applyQuaternion(knotQuat);
+    }
+  }
+
+  for (var p = 0; p < 3; p++) {
+    var pT = orbitT + OFFSETS[p];
+    for (var e = 0; e < emitCount; e++) {
+      var sT = pT + e * 0.004;
+      var w = getPos(sT);
+      var sz = mode === 3 ? 0.18+Math.random()*0.06 : 0.11+Math.random()*0.03;
+      emit(w, p, pAlpha, sz, trailLife);
+    }
+    var hPos = getPos(pT);
+    heads[p].position.copy(hPos);
+    glowSprites[p].position.copy(hPos);
+    var pulse = mode === 3 ? 1.4 + 0.2*Math.sin(frame*0.06 + p*2)
+                          : 1.0 + 0.15*Math.sin(frame*0.06 + p*2);
+    glowSprites[p].scale.set(pulse, pulse, 1);
+  }
+
+  var showTri = document.getElementById('triToggle').checked && mode === 0;
+  triLine.visible = showTri;
+  if (showTri) {
+    var tp = triGeo.attributes.position.array;
+    for (var i = 0; i < 3; i++) {
+      tp[i*3]   = heads[i].position.x;
+      tp[i*3+1] = heads[i].position.y;
+      tp[i*3+2] = heads[i].position.z;
+    }
+    tp[9] = tp[0]; tp[10] = tp[1]; tp[11] = tp[2];
+    triGeo.attributes.position.needsUpdate = true;
+  }
+
+  // Per-particle fade
+  for (var i = 0; i < tCount; i++) {
+    var age = frame - tBirth[i];
+    var life = tLife[i];
+    if (life <= 0) { tC[i*4+3]=0; continue; }
+    var frac = age / life;
+    var initAlpha = mode === 3 ? 0.85 : 0.65;
+    if (frac >= 1.0) { tC[i*4+3]=0; }
+    else if (frac < 0.3) { tC[i*4+3]=initAlpha; }
+    else { tC[i*4+3] = initAlpha*(1.0-(frac-0.3)/0.7); }
+  }
+
+  tG.attributes.position.needsUpdate = true;
+  tG.attributes.color.needsUpdate = true;
+  tG.attributes.size.needsUpdate = true;
+  tG.setDrawRange(0, tCount);
+
+  camera.position.set(
+    camDist*Math.sin(camTheta)*Math.cos(camPhi),
+    camDist*Math.sin(camPhi),
+    camDist*Math.cos(camTheta)*Math.cos(camPhi)
+  );
+  camera.lookAt(0,0,0);
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
