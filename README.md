@@ -1,3 +1,5 @@
+![](./assets/banner-01-rd.png)
+
 # Walter Henrique Alves da Silva — Research
 
 This repository is my R&D , it holds the published papers and active work on a geometric description of thought and language.
@@ -7,7 +9,10 @@ From a research standpoint, my home is in psychology and my first paper (At the 
 I am an essentially self-taught, most things here were derived from first principles in my leisure time.
 
 What I'm actively building (and where these theoretical tools get applied) is https://github.com/faltz009/open-research-network
+
 ---
+
+![](./assets/banner-02-where.png)
 
 ## Where Things Are At
 
@@ -45,6 +50,8 @@ I wasn't planning to go this deep into physics, but the numbers kept working. A 
 
 ---
 
+![](./assets/banner-03-repo.png)
+
 ## Published Papers
 
 In chronological order:
@@ -78,6 +85,8 @@ In chronological order:
 - [Commentary on Levin, Stepney et al.](./Commentary%20on%20Levin,%20Susan%20Stepney,%20et%20all/) — Written in response to open questions on time and self-reference in living systems; documents the convergence between this framework and Levin's bioelectric cognition work.
 
 ---
+
+![](./assets/banner-04-support.png)
 
 ## Support This Research
 
