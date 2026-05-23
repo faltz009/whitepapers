@@ -15,7 +15,7 @@ What I'm actively building (and where these theoretical tools get applied) is ht
 
 ### Geometric Calculus
 
-The toolset is already running — the Closure SDK and the digital brain built on it are public and fully operational. The paper is human-written through page 9, with the remaining sections and figures coming. The point of making it public now is that the math is done and the code works; the accessible explanation is being written around something that already exists rather than pitched ahead of it.
+The toolset is already running — the Closure SDK and the digital brain built on it are public and fully operational. The paper is human-written through page 9, with the remaining sections and figures coming. The point of making it public now is that the math is done and the code works; so I can write the accessible explanations at my own pace.
 
 [Geometric Calculus →](./Geometric%20Calculus/) · DOI: [10.5281/zenodo.20349033](https://doi.org/10.5281/zenodo.20349033)
 
@@ -23,7 +23,7 @@ The toolset is already running — the Closure SDK and the digital brain built o
 
 ### The Geometric Computer
 
-If you want to understand the library or build on it, this is the primary reference. It documents what the digital brain does and why — how it computes, learns one-shot, consolidates during quiet periods, and self-monitors — and argues that this architecture is a more natural fit for certain problems than the standard gradient descent approach. Eight experiments verify every claim.
+If you want to understand the library or build on it, this is the primary reference. It documents what the digital brain does and why — how it computes, learns one-shot, consolidates during quiet periods, and self-monitors — and argues that this architecture is a more natural fit for certain problems than the standard gradient descent approach.
 
 [The Geometric Computer →](./The%20Geometric%20Computer/) · DOI: [10.5281/zenodo.19578024](https://doi.org/10.5281/zenodo.19578024)
 
@@ -31,7 +31,7 @@ If you want to understand the library or build on it, this is the primary refere
 
 ### A Geometric Definition of Zero
 
-To make learning work on the geometric computer I needed a definition of a learning event — a genuinely novel state, something that wasn't there before. Those turn out to be prime states in the geometry, and working out what that means precisely led to a geometric proof of the Riemann Hypothesis falling out as a consequence, which I formalized in Lean 4 — if any mathematicians want to look at it and tell me what's wrong, that would be genuinely useful.
+To make learning work on the geometric computer I needed a definition of a learning event — a genuinely novel state, something that wasn't there before. Those turn out to be prime states in the geometry, and working out what that means precisely led to a geometric proof of the Riemann Hypothesis falling out as a consequence, which I formalized in Lean 4 — if any mathematicians want to look at it and tell me what's wrong, that would be genuinely useful because this I'm way off my league here.
 
 [A Geometric Definition of Zero →](./A%20Geometric%20Definition%20of%20Zero/) · DOI: [10.5281/zenodo.19427453](https://doi.org/10.5281/zenodo.19427453)  
 [Lean 4 proof →](https://github.com/faltz009/geometric-zero-rh)
