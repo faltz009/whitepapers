@@ -15,7 +15,7 @@ What I'm actively building (and where these theoretical tools get applied) is ht
 
 ### Geometric Calculus
 
-The toolset is already running — the Closure SDK and the digital brain built on it are public and fully operational. The paper is human-written through page 9, with the remaining sections and figures coming. The point of making it public now is that the math is done and the code works; so I can write the accessible explanations at my own pace.
+My current research priority, making the toolset of S³ calculus clear and maybe get early feedack on it. The paper is human-written through page 9, with the remaining sections and figures coming. The point of making it public now is that the math is done and the code works; so I can write the accessible explanations at my own pace.
 
 [Geometric Calculus →](./Geometric%20Calculus/) · DOI: [10.5281/zenodo.20349033](https://doi.org/10.5281/zenodo.20349033)
 
