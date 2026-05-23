@@ -1,7 +1,5 @@
 ![](./assets/banner-01-rd.png)
 
-# Walter Henrique Alves da Silva — Research
-
 This repository is my R&D , it holds the published papers and active work on a geometric description of thought and language.
 
 From a research standpoint, my home is in psychology and my first paper (At the Border of Chaos) is essentially a philosophy one, from then on it gets a bit more mathematical.
@@ -14,7 +12,6 @@ What I'm actively building (and where these theoretical tools get applied) is ht
 
 ![](./assets/banner-02-where.png)
 
-## Where Things Are At
 
 ### Geometric Calculus
 
@@ -52,7 +49,7 @@ I wasn't planning to go this deep into physics, but the numbers kept working. A 
 
 ![](./assets/banner-03-repo.png)
 
-## Published Papers
+## Released Papers
 
 In chronological order:
 
@@ -88,7 +85,6 @@ In chronological order:
 
 ![](./assets/banner-04-support.png)
 
-## Support This Research
 
 All of this is independent work done in my own time and released for free. If you find it useful or want to see it continue, any support helps.
 
