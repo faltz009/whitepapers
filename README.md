@@ -90,6 +90,7 @@ All of this is independent work done in my own time and released for free. If yo
 
 | Method | Address |
 |---|---|
+| Ko-fi | [ko-fi.com/waltersilva](https://ko-fi.com/waltersilva) |
 | BTC | `155jaKugGGhdwX2Dp55bfHWpWbWD3Gr3PG` |
 | ETH (ERC-20) | `0x31f0253180b03c16a0aa2d7091311d7363ef22a4` |
 | SOL | `HdGFaL6A8z8AetnyPn6vKPU4QJGaSHBtoqPK32qbe6wV` |
